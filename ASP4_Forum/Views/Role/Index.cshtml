@@ -1,0 +1,62 @@
+﻿@using ASP4_Forum.Models
+@using ASP4_Forum.Helpers
+@model IEnumerable<ApplicationRole>
+
+@{
+    ViewBag.Title = "Роли";
+}
+
+    <div class="container">
+        <h3 class="text-center">Roles</h3>
+        <table class="table table-striped table-bordered table-hover">
+            <tr class="text-center table-primary">
+                <th>ID</th>
+                <th>Role Name</th>
+                <th>Users</th>
+                <th style="min-width: 130px">Action</th>
+            </tr>
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No any Roles</td>
+                </tr>
+            }
+            else
+            {
+                foreach (ApplicationRole role in Model)
+                {
+                    <tr>
+                        <td>@role.Id</td>
+                        <td class="text-info"><strong>@role.Name</strong></td>
+                        <td>
+                            @if (role.Users == null || role.Users.Count == 0)
+                            {
+                                @: No users in this role
+                            }
+                            else
+                            {
+                                <p>
+                                    @string.Join(", ", role.Users.Select(x =>
+                                 Html.GetUserName(x.UserId)))
+                                </p>
+                            }
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("Delete", "Role", new { id = role.Id }))
+                            {
+                                @Html.ActionLink(" Edit ", "Edit", new { id = role.Id },
+                                    new { @class = "btn btn-primary btn-xs", style = "float:left; margin-right:5px" })
+                                <button class="btn btn-danger btn-xs" type="submit">Delete</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+
+        <div class="text-center">
+            @Html.ActionLink("Создать", "Create", null, new { @class = "btn btn-success" })
+
+        </div>
+        <div class="text-center mt-4"><a class="btn btn-block btn-primary" href="Manage">Back to Profile</a> </div>
+    </div>

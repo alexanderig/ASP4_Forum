@@ -1,0 +1,113 @@
+﻿@model ASP4_Forum.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Create a new account.</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group mx-auto col-sm-4">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2  font-weight-bold text-info" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Example: Michael Jackson", @style = "max-width:100%" } })
+        </div>
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group has-danger mx-auto col-sm-4">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2  font-weight-bold text-info" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-at"></i></span>
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter your Email", @style = "max-width:100%" } })
+        </div>
+        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group mx-auto col-sm-4">
+        @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2 font-weight-bold text-info" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-globe"></i></span>
+            @Html.DropDownListFor(model => model.CountryID, ViewBag.ListCountries as SelectList, new { @class = "form-control", @style = "max-width:100%", @id = "mycountrydrop" })
+        </div>
+        @Html.ValidationMessageFor(model => model.CountryID, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group mx-auto col-sm-4">
+        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2 font-weight-bold text-info" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-building"></i></span>
+            @Html.DropDownListFor(model => model.CityID, ViewBag.ListCities as SelectList, new { @class = "form-control", @style = "max-width:100%", @id = "mycitydrop" })
+        </div>
+        @Html.ValidationMessageFor(model => model.CityID, "", new { @class = "text-danger" })
+        <div id="loading" style="display:none;">
+            <p class="text-danger">Loading Cities...</p>
+        </div>
+    </div>
+    <div class="form-group mx-auto col-sm-4">
+        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2 font-weight-bold text-info" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-key"></i></span>
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter your Password > 4 chars", @style = "max-width:100%" } })
+        </div>
+        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group mx-auto col-sm-4">
+        @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-10 font-weight-bold text-info" })
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-key"></i></span>
+            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter your Password > 4 chars", @style = "max-width:100%" } })
+        </div>
+        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 mx-auto col-sm-2">
+            <input type="submit" value=" Register Me " class="btn btn-primary col-sm-9" />
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+
+        $('#mycountrydrop').change(function () {
+
+            var citydrop = $('#mycitydrop');
+            citydrop.empty();
+            var cntr = $(this).val();
+            if (cntr) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetCities", "Account")',
+                    data: { CountryID: cntr },
+                    dataType: "json",
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            citydrop.append('<option value="' + data[i].ID + '">' + data[i].CityName + '</option>');
+                        }
+                    },
+                    error: function (result) {
+                        $('#mycitydrop').html('<option value="">Error Country or no Cities</option>');
+                    }
+
+                });
+            }
+            else {
+                $('#mycitydrop').html('<option value="">Select Country or no Cities</option>');
+
+            }
+
+        });
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+}

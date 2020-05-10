@@ -1,0 +1,152 @@
+﻿@model ASP4_Forum.Models.IndexViewModel
+@{
+    ViewBag.Title = "Manage";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>Change your account settings</h4>
+    <hr />
+    <div class="jumbotron">
+        <dl class="dl-horizontal">
+            <dt>Change Avatar</dt>
+            <dd><a data-toggle="tooltip" title="Click to choose avatar" class="Edit-avatar" href="/Manage/Avatars"><img src="@Model.AvatarURL" id="avapath" title="avatar" /></a></dd>
+            <dt>Roles</dt>
+            <dd>@Html.ActionLink("Roles view", "Index", "Role")</dd>
+            <dt>Claims</dt>
+            <dd>@Html.ActionLink("View Claims", "Index", "Claims")</dd>
+            <dt>Password:</dt>
+            <dd>
+                [
+                @if (Model.HasPassword)
+                {
+                    @Html.ActionLink("Change your password", "ChangePassword")
+                }
+                else
+                {
+                    @Html.ActionLink("Create", "SetPassword")
+                }
+                ]
+            </dd>
+            <dt>External Logins:</dt>
+            <dd>
+                @Model.Logins.Count [
+                @Html.ActionLink("Manage", "ManageLogins") ]
+            </dd>
+
+
+
+            @*
+            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+             Uncomment the following block after you have set up two-factor authentication
+            *@
+            @*
+            <dt>Phone Number:</dt>
+            <dd>
+                @(Model.PhoneNumber ?? "None")
+                @if (Model.PhoneNumber != null)
+                {
+                    <br />
+                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                    }
+                }
+                else
+                {
+                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+                }
+            </dd>
+            *@
+            <dt>Two-Factor Authentication:</dt>
+            <dd>
+                <p>
+                    There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                    for details on setting up this ASP.NET application to support two-factor authentication.
+                </p>
+                @*@if (Model.TwoFactor)
+                {
+                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>Enabled
+                        <input type="submit" value="Disable" class="btn btn-link" />
+                        </text>
+                    }
+                }
+                else
+                {
+                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>Disabled
+                        <input type="submit" value="Enable" class="btn btn-link" />
+                        </text>
+                    }
+                }*@
+            </dd>
+        </dl>
+    </div>
+    <div class="modal fade" id="modalD" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        var myserver = $.connection.forumHub;
+        myserver.client.onchangeAvatar = function (avapath) {
+            $('#avapath').attr('src', avapath);
+            //alert('changed');
+        }
+
+        myserver.client.onNewMessage = function (message) {
+
+            $('#messages');
+        }
+
+        
+        $.connection.hub.start().done(function () {
+           // alert('hub start');
+            //$('#sendmessage').click(function () {
+            //    // Вызываем у хаба метод Send
+            //    chat.server.send($('#mynewmessage').val());
+            //    $('#message').val('');
+            //});
+
+            //// обработка логина
+            //$("#btnLogin").click(function () {
+
+            //    var name = $("#txtUserName").val();
+            //    if (name.length > 0) {
+            //        chat.server.connect(name);
+            //    }
+            //    else {
+            //        alert("Введите имя");
+            //    }
+            //});
+        });
+
+    });
+
+
+    $(".Edit-avatar").on("click", function (e) {
+        e.preventDefault();
+        $.get(this.href, function (result) {
+
+            $('#modalD').html(result);
+            $('#modalD').modal('show');
+        })
+    });
+
+</script>

@@ -1,0 +1,31 @@
+﻿@using System.Security.Claims
+@using ASP4_Forum.Helpers
+
+@model IEnumerable<Claim>
+
+
+<div class="container mt-2">
+    <h3 class="text-center" > Claims </h3>
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="text-center table-primary">
+            <tr>
+                <th>Subject</th>
+                <th>Issuer</th>
+                <th>Type</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+            <tbody>
+                @foreach (Claim claim in Model.OrderBy(x => x.Type))
+                {
+                    <tr>
+                        <td>@claim.Subject.Name</td>
+                        <td class="text-success">@claim.Issuer</td>
+                        <td class="text-info">@Html.ClaimType(claim.Type)</td>
+                        <td>@claim.Value</td>
+                    </tr>
+                }
+            </tbody>
+    </table>
+    <div class="text-center"><a class="btn btn-primary btn-block" href="Manage" >Back to Profile</a></div>
+</div>

@@ -1,0 +1,31 @@
+﻿
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.js"></script>
+<script type="text/javascript">
+    $('.composer').summernote({
+        placeholder: 'Hello stand alone ui',
+        height: 350,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear', 'fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'hr']],
+            ['view', ['codeview', 'help']]
+        ]
+    });
+    //$('.composer').summernote('insertImage', url, function ($image) {
+    //    $image.css('width', $image.width() / 3);
+    //    $image.attr('data-filename', 'retriever');
+    //});
+    $(document).ready(function () {
+        //alert("ready");
+        $('#save').click(function () {
+            var composertext = $('.composer').summernote('code');
+            $('#result').empty();
+            $('#result').html(composertext);
+        });
+    });
+    //alert($('Getbutton').val());
+</script>
