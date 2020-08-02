@@ -102,7 +102,7 @@ namespace ASP4_Forum.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                return View("Error", new string[] { "В доступе отказано" });
+                return View("Error", new string[] { "Access Denied" });
             }
 
             ViewBag.ReturnUrl = returnUrl;

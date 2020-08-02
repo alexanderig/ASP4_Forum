@@ -20,4 +20,5 @@ namespace ASP4_Forum.Models.ViewModels
         public string[] IdsToAdd { get; set; }
         public string[] IdsToDelete { get; set; }
     }
+
 }

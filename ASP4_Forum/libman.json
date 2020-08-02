@@ -5,6 +5,11 @@
     {
       "library": "bootstrap@4.4.1",
       "destination": "Content/bootstrap/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery@3.5.1",
+      "destination": "Scripts/"
     }
   ]
 }

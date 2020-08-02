@@ -370,6 +370,18 @@ namespace ASP4_Forum.Controllers
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
+
+        public async Task<ActionResult> AdminSection()
+        {
+            ApplicationDbContext context = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            ViewBag.Sections = context.Sections.Count();
+            ViewBag.Partitions = context.Partitions.Count();
+            ViewBag.Themes = context.Themes.Count();
+
+            return View();
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -380,6 +392,9 @@ namespace ASP4_Forum.Controllers
 
             base.Dispose(disposing);
         }
+
+
+
 
 #region Helpers
         // Used for XSRF protection when adding external logins

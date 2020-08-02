@@ -9,31 +9,31 @@
 <div>
     <h4>Change your account settings</h4>
     <hr />
-    <div class="jumbotron">
+    <div class="jumbotron col-6 mx-auto text-center">
         <dl class="dl-horizontal">
             <dt>Change Avatar</dt>
-            <dd><a data-toggle="tooltip" title="Click to choose avatar" class="Edit-avatar" href="/Manage/Avatars"><img src="@Model.AvatarURL" id="avapath" title="avatar" /></a></dd>
+            <dd><a data-toggle="tooltip" title="Click to choose avatar" class="Edit-avatar" href="/Manage/Avatars"><img src="@Model.AvatarURL" id="avapath" /></a></dd>
             <dt>Roles</dt>
-            <dd>@Html.ActionLink("Roles view", "Index", "Role")</dd>
+            <dd>@Html.ActionLink("Roles view", "Index", "Role", routeValues:null, htmlAttributes: new { @class = "btn btn-primary col-4"})</dd>
             <dt>Claims</dt>
-            <dd>@Html.ActionLink("View Claims", "Index", "Claims")</dd>
+            <dd>@Html.ActionLink("View Claims", "Index", "Claims", routeValues: null, htmlAttributes: new { @class = "btn btn-primary col-4"})</dd>
             <dt>Password:</dt>
             <dd>
                 [
                 @if (Model.HasPassword)
                 {
-                    @Html.ActionLink("Change your password", "ChangePassword")
+                    @Html.ActionLink("Change your password", "ChangePassword", routeValues: null, htmlAttributes: new { @class = "btn btn-primary col-4" })
                 }
                 else
                 {
-                    @Html.ActionLink("Create", "SetPassword")
+                    @Html.ActionLink("Create", "SetPassword", routeValues: null, htmlAttributes: new { @class = "btn btn-primary col-4" })
                 }
                 ]
             </dd>
             <dt>External Logins:</dt>
             <dd>
                 @Model.Logins.Count [
-                @Html.ActionLink("Manage", "ManageLogins") ]
+                @Html.ActionLink("Manage", "ManageLogins", routeValues: null, htmlAttributes: new { @class = "btn btn-primary col-4" }) ]
             </dd>
 
 
@@ -69,8 +69,7 @@
             <dt>Two-Factor Authentication:</dt>
             <dd>
                 <p>
-                    There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                    for details on setting up this ASP.NET application to support two-factor authentication.
+                    There are no two-factor authentication providers configured.
                 </p>
                 @*@if (Model.TwoFactor)
                 {
@@ -95,7 +94,7 @@
             </dd>
         </dl>
     </div>
-    <div class="modal fade" id="modalD" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalD" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-focus-on="input:first">
 
 
     </div>

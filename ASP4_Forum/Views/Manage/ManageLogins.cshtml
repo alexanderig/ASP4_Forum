@@ -27,7 +27,7 @@
                     @foreach (var account in Model.CurrentLogins)
                     {
                         <tr>
-                            <td>@account.LoginProvider</td>
+                            <td class="btn btn-info">@account.LoginProvider</td>
                             <td>
                                 @if (ViewBag.ShowRemoveButton)
                                 {
@@ -69,5 +69,5 @@
     }
 }
 <div class="text-center m-4">
-    <a href="Manage" class="btn btn-primary btn-block">Back to Profile</a>
+    <a href="/Manage" class="btn btn-primary btn-block">Back to Profile</a>
 </div> 

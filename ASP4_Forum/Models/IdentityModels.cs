@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using System.Web.UI.WebControls.WebParts;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+
 namespace ASP4_Forum.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        public ApplicationUser()
+        {
+            Themes = new HashSet<Theme>();
+            Posts = new HashSet<Post>();
+        }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -21,34 +30,13 @@ namespace ASP4_Forum.Models
         public string AvatarURL { get; set; }
         public virtual City City {get;set;}
         public virtual Country Country { get; set; }
+        public virtual ICollection<Theme> Themes { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
+        public DateTime BannedDate { get; set; }
 
     }
 
-    public class City
-    {
-        public City()
-        {
-            Users = new HashSet<ApplicationUser>();
-        }
-        public int ID { get; set; }
-        public string CityName { get; set; }
-        public virtual Country Country { get; set; }
-        public virtual ICollection<ApplicationUser> Users { get; set; }
-    }
-
-    public class Country
-    {
-        public Country()
-        {
-            Users = new HashSet<ApplicationUser>();
-            Cities = new HashSet<City>();
-        }
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public virtual ICollection<ApplicationUser> Users { get; set; }
-        public virtual ICollection<City> Cities { get; set; }
-    }
-
+   
     public class ApplicationRole:IdentityRole
     {
         public ApplicationRole() : base() { }
@@ -69,9 +57,13 @@ namespace ASP4_Forum.Models
         }
 
 
-        public virtual DbSet<Forum> MyForums { get; set; }
+        
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Section> Sections { get; set; }
+        public virtual DbSet<Partition> Partitions { get; set; }
+        public virtual DbSet<Theme> Themes { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
     }
 
 
@@ -121,7 +113,7 @@ namespace ASP4_Forum.Models
             ApplicationUser user = userManager.FindByName(userName);
             if (user == null)
             {
-                var result = userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city1, Country = ctr1, AvatarURL = avatarPath }, pass);
+                var result = userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city1, Country = ctr1, AvatarURL = avatarPath, BannedDate = DateTime.Now }, pass);
                 user = userManager.FindByName(userName);
             }
 
@@ -140,7 +132,7 @@ namespace ASP4_Forum.Models
             
             if (user == null)
             {
-                userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city2, Country = ctr1, AvatarURL = avatarPath }, pass);
+                userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city2, Country = ctr1, AvatarURL = avatarPath, BannedDate = DateTime.Now }, pass);
                 user = userManager.FindByName(userName);
             }
 
@@ -159,7 +151,7 @@ namespace ASP4_Forum.Models
             
             if (user == null)
             {
-                userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city26, Country = ctr11, AvatarURL = avatarPath }, pass);
+                userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city26, Country = ctr11, AvatarURL = avatarPath, BannedDate = DateTime.Now }, pass);
                 user = userManager.FindByName(userName);
             }
 
@@ -172,20 +164,15 @@ namespace ASP4_Forum.Models
 
 
 
-    public class Mycontext:DbContext
-    {
-        public Mycontext()
-            : base("DefaultConnection")
-        {
-        }
-    }
+    //public class Mycontext:DbContext
+    //{
+    //    public Mycontext()
+    //        : base("DefaultConnection")
+    //    {
+    //    }
+    //}
 
-    public class Forum
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-    }
-
+   
 
 }
 

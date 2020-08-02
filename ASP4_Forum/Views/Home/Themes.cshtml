@@ -1,0 +1,113 @@
+﻿@model IEnumerable<ASP4_Forum.Models.Theme>
+@using ASP4_Forum.Models
+
+
+<div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+        <div class="modal-body">
+
+            <h3 class="text-center">Themes</h3>
+            <table class="table table-striped table-bordered table-hover">
+                <tr class="text-center table-primary">
+                    <th style="width:18%">Date</th>
+                    <th>Themes Name <br /><small>Click on name to edit</small> </th>
+                    <th>Posts</th>
+                    <th>Action</th>
+                </tr>
+                @if (Model.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">No any Themes yet..</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (Theme mytheme in Model)
+                    {
+                        <tr>
+                            <td> @mytheme.Date</td>
+                            <td class="text-info"><a class="Edit-themename" href="/Home/EditThemeName/@mytheme.ID"><strong>@mytheme.Name</strong></a></td>
+                            <td>
+                                @if (mytheme.Posts == null)
+                                {
+                                    @: No Posts in this theme
+                                }
+                                else
+                                {
+                                    <p>
+                                        @mytheme.Posts.Count.ToString() Post(s) in this theme   
+                                    </p>
+                                }
+                            </td>
+                            <td>
+
+                                @Html.ActionLink("Edit posts", "EditThemeContent", new { id = mytheme.ID },
+                                    new { @class = "Edit-theme btn btn-primary col-sm-6", style = "float:left; margin-right:7px" })
+                                @Html.ActionLink("Delete", "DelTheme", new { id = mytheme.ID }, new { @class = "Del-theme btn btn-danger col-sm-5 " })
+
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+
+            <div class="text-center">
+                @*@Html.ActionLink("Create", "CreateSection", null, new { @class = "Create-section btn btn-success col-3"})*@
+                <a class="Create-theme btn btn-success col-3" data-toggle="modal" href="/Home/CreateTheme">Create</a>
+            </div>
+            <div class="text-center mt-4"><a class="btn btn-block btn-primary" href="/Manage/AdminSection">Back to Admin Sections</a> </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+}
+
+
+<div class="modal hide fade" id="modalS" role="dialog" tabindex="-1">
+
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    function PerformAjax(e) {
+        e.preventDefault();
+        $.get(this.href, function (result) {
+
+            $('#modalS').html(result);
+            $('#modalS').modal('show');
+            var form = $('#formcr');
+            form.removeData('validator');
+            form.removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse(form);
+        })
+    };
+
+
+    $(function () {
+        $('.Create-theme').on('click', function (e) {
+            PerformAjax.bind(this)(e);
+        });
+
+        $('.Del-theme').on('click', function (e) {
+            PerformAjax.bind(this)(e);
+        });
+
+        $('.Edit-theme').on('click', function (e) {
+            PerformAjax.bind(this)(e);
+        });
+
+        $('.Edit-themename').on('click', function (e) {
+            PerformAjax.bind(this)(e);
+        });
+    });
+
+
+</script>
+

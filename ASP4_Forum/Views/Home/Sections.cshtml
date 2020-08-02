@@ -1,0 +1,135 @@
+﻿@model IEnumerable<ASP4_Forum.Models.Section>
+@using ASP4_Forum.Models
+
+
+<div class="modal-dialog modal-xl">
+    <div class="modal-content">
+        
+        <div class="modal-body">
+
+            <h3 class="text-center">Sections</h3>
+            <table class="table table-striped table-bordered table-hover">
+                <tr class="text-center table-primary">
+                    <th style="width:18%">Date</th>
+                    <th>Section Name <br/><small>Click on name to edit</small> </th>
+                    <th>Partitions</th>
+                    <th>Action</th>
+                </tr>
+                @if (Model.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">No any Sections yet..</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (Section mysection in Model)
+                    {
+                        <tr>
+                            <td> @mysection.Date</td>
+                            <td class="text-info"><a class="Edit-sectionname" href="/Home/EditSectionName/@mysection.ID"><strong>@mysection.Name</strong></a></td>
+                            <td>
+                                @if (mysection.Partitions == null || mysection.Partitions.Count() == 0)
+                                {
+                                    @: No Partitions in this section
+                                }
+                                else
+                                {
+                                    <p>
+                                        @string.Join(", ", mysection.Partitions.Select(x => x.Name))
+                                    </p>
+                                }
+                            </td>
+                            <td>
+
+                                @Html.ActionLink("Edit descendants", "EditSectionContent", new { id = mysection.ID },
+                                    new { @class = "Edit-section btn btn-primary col-sm-6", style = "float:left; margin-right:7px" })
+                                @Html.ActionLink("Delete", "DelSection", new { id = mysection.ID }, new { @class = "Del-section btn btn-danger col-sm-5 " })
+
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+
+            <div class="text-center">
+                @*@Html.ActionLink("Create", "CreateSection", null, new { @class = "Create-section btn btn-success col-3"})*@
+                <a class="Create-section btn btn-success col-3" data-toggle="modal" href="/Home/CreateSection">Create</a>
+            </div>
+            <div class="text-center mt-4"><a class="btn btn-block btn-primary" href="/Manage/AdminSection">Back to Admin Sections</a> </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+}
+
+
+<div class="modal hide fade" id="modalS" role="dialog" tabindex="-1">
+
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $('.Create-section').on('click', function (e) {
+            e.preventDefault();
+            // alert(this.href);
+            $.get(this.href, function (result) {
+
+                $('#modalS').html(result);
+                $('#modalS').modal('show');
+                var form = $('#formcr');
+                form.removeData('validator');
+                form.removeData('unobtrusiveValidation');
+                $.validator.unobtrusive.parse(form);
+            });
+        });
+
+        $('.Del-section').on('click', function (e) {
+            e.preventDefault();
+            $.get(this.href, function (result) {
+
+                $('#modalS').html(result);
+                $('#modalS').modal('show');
+                var form = $('#formcr');
+                form.removeData('validator');
+                form.removeData('unobtrusiveValidation');
+                $.validator.unobtrusive.parse(form);
+            });
+        });
+
+        $('.Edit-section').on('click', function (e) {
+            e.preventDefault();
+            $.get(this.href, function (result) {
+
+                $('#modalS').html(result);
+                $('#modalS').modal('show');
+                var form = $('#formcr');
+                form.removeData('validator');
+                form.removeData('unobtrusiveValidation');
+                $.validator.unobtrusive.parse(form);
+            });
+        });
+
+        $('.Edit-sectionname').on('click', function (e) {
+            e.preventDefault();
+            $.get(this.href, function (result) {
+
+                $('#modalS').html(result);
+                $('#modalS').modal('show');
+                var form = $('#formcr');
+                form.removeData('validator');
+                form.removeData('unobtrusiveValidation');
+                $.validator.unobtrusive.parse(form);
+            });
+        });
+    });
+
+
+</script>

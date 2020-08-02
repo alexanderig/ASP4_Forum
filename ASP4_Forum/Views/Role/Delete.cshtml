@@ -1,0 +1,40 @@
+﻿@model ASP4_Forum.Models.ApplicationRole
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<div class="modal-dialog flipInY animated">
+    <div class="modal-content">
+        <div class="modal-header text-center">
+            <h4 class="modal-title">Delete this Role?</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        <div class="modal-body">
+            <div class="form-actions no-color">
+                <div class="form-group">
+                    @Html.TextBoxFor(n => n.Name, new { @class = "form-control col-11 mx-auto", disabled = "disabled", @readonly = "readonly" })
+                </div>
+            </div>
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-footer mx-auto col-11">
+
+
+
+                <input type="submit" value="Delete" class="btn btn-danger col-5 mr-auto" />
+                @*@Html.ActionLink("Back to List", "Index", new { id = string.Empty }, new { @class = "btn btn-success col-2" })*@
+                <button type="button" class="btn btn-primary col-5" data-dismiss="modal">Close</button>
+
+               
+            </div>
+        }
+        </div>
+</div>
+
+
+

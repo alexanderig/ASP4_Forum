@@ -1,16 +1,40 @@
 ﻿@model string
 @{
-    ViewBag.Title = "Создание роли";
+    ViewBag.Title = "Role creation";
 }
 
-<h2>Создать роль</h2>
-@Html.ValidationSummary(false)
-@using (Html.BeginForm())
-{
-    <div class="form-group">
-        <label>Название</label>
-        <input name="name" value="@Model" class="form-control" />
+
+<div class="modal-dialog flipInY animated">
+    <div class="modal-content">
+        <div class="modal-header text-center">
+            <h4 class="modal-title">Create new Role</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        @Html.ValidationSummary(false)
+
+        @using (Html.BeginForm())
+        {
+            <div class="modal-body">
+                <div class="form-actions no-color">
+                    <div class="form-group mx-auto">
+                        <label class="ml-4"><b>Give Name your Role</b></label>
+                        <input name="name" value="@Model" class="form-control col-11 mx-auto" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal-footer mx-auto col-11">
+
+
+
+                <input type="submit" value="Create Role" class="btn btn-success col-5 mr-auto" />
+                @*@Html.ActionLink("Back to List", "Index", new { id = string.Empty }, new { @class = "btn btn-success col-2" })*@
+                <button type="button" class="btn btn-primary col-5" data-dismiss="modal">Close</button>
+
+
+            </div>
+        }
     </div>
-    <button type="submit" class="btn btn-primary">Создать</button>
-    @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
-}
+</div>

@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "AdminSection";
+}
+
+<h2 class="text-center">Administrator corner</h2>
+<div class="row justify-content-around">
+    <div class="col-sm-5 m-2">
+        <div class="card border-primary">
+            <h3 class="card-header text-white bg-primary">Admin Sections</h3>
+            <div class="card-body">
+                <h5 class="card-title">Manage sections</h5>
+                <h6 class="card-subtitle text-muted">Create or delete Section</h6>
+            </div>
+            <div class="card-body">
+                <p class="card-text"> Sections is the main header wich represents logical dividing of different subjects, like main branches of the tree</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">View section<a href="/Home/Sections" class="btn btn-sm btn-primary col-sm-4 float-right">View</a></li>
+
+            </ul>
+
+            <div class="card-footer text-muted">
+                
+                Forum have: <span class="badge badge-primary badge-pill">@ViewBag.Sections</span> sections.
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-5 m-2">
+        <div class="card border-primary">
+            <h3 class="card-header text-white bg-primary">Admin Partitions</h3>
+            <div class="card-body">
+                <h5 class="card-title">Manage Partitions</h5>
+                <h6 class="card-subtitle text-muted">Create or delete Partition</h6>
+            </div>
+            <div class="card-body">
+                <p class="card-text"> Partitions contains themes with one main direction, it logically represents subsections of the main section it belongs. It's kind of branches on the primary branch </p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">View section<a href="/Home/Partitions" class=" btn btn-sm btn-primary col-sm-4 float-right">View</a></li>
+            </ul>
+
+            <div class="card-footer text-muted">
+                Forum have: <span class="badge badge-primary badge-pill">@ViewBag.Partitions</span> partitions.
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-5 m-2">
+        <div class="card border-primary">
+            <h3 class="card-header text-white bg-primary">Admin Themes</h3>
+            <div class="card-body">
+                <h5 class="card-title">Manage Themes</h5>
+                <h6 class="card-subtitle text-muted">Create or delete Theme</h6>
+            </div>
+            <div class="card-body">
+                <p class="card-text"> Themes contains themes with one main direction, it logically represents subsections of the main section it belongs. It's kind of branches on the primary branch </p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">View Theme<a href="/Home/Themes" class="btn btn-sm btn-primary col-sm-4 float-right">View</a></li>
+            </ul>
+
+            <div class="card-footer text-muted">
+                Forum have: <span class="badge badge-primary badge-pill">@ViewBag.Themes</span> themes.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="modalD" role="dialog" tabindex="-1" >
+
+
+</div>
+
+
+
+
+
+@*<script src="~/Scripts/bootstrap-modalmanager.js"></script>*@
+@*<script src="~/Scripts/bootstrap-modal.js"></script>*@
+@*<script type="text/javascript">
+
+    $(function () {
+        $('.float-right').on('click', function (e) {
+            e.preventDefault();
+            //$('body').modalmanager('loading');
+
+           
+            $.get(this.href, function (result) {
+
+                $('#modalD').html(result);
+                $('#modalD').modal('show');
+            });
+        });
+             
+    });
+
+  
+</script>*@

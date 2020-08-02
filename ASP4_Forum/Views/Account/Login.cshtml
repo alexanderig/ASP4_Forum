@@ -18,7 +18,7 @@
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2  font-weight-bold text-info" })
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Example: Michael Jackson", @style = "max-width:100%" } })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Example: Michael Jackson" } })
                     </div>
                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 </div>

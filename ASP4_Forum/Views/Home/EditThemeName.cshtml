@@ -1,0 +1,62 @@
+﻿@model ASP4_Forum.Models.Theme
+
+<div class="modal-dialog flipInY animated">
+    <div class="modal-content">
+        <div class="modal-header text-center">
+            <h4 class="modal-title">Edit Theme</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+
+        @using (Html.BeginForm("EditThemeName", "Home", FormMethod.Post, htmlAttributes: new { id = "formcr" }))
+        {@Html.AntiForgeryToken()
+        <div class="modal-body">
+            <div class="form-actions no-color">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.ID)
+                <div class="form-group mx-auto">
+                    <label class="col-11 text-info"><b>Edit Theme's Name</b></label>
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control col-11 mx-auto" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group mx-auto">
+                    <label class="col-11 text-info"><b>Creation Date</b></label>
+                    @Html.TextBoxFor(model => model.Date, new { @class = "form-control col-11 mx-auto", disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal-footer mx-auto col-11">
+
+
+
+            <input type="submit" value="Save changes" class="btn btn-success col-5 mr-auto" />
+
+            <button type="button" class="btn btn-primary col-5" data-dismiss="modal">Cancel</button>
+
+
+        </div>
+    }
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

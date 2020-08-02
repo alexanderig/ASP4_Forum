@@ -37,7 +37,7 @@ namespace ASP4_Forum.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
@@ -57,11 +57,22 @@ namespace ASP4_Forum.Controllers
                     AddErrorsFromResult(result);
                 }
             }
-            return View(name);
+            return PartialView(name);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult> Delete(string id)
+        {
+            ApplicationRole role = await RoleManager.FindByIdAsync(id);
+            if(role == null)
+                return View("Error", new string[] { "Role not found" });
+            return PartialView(role);
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirm(string id)
         {
             ApplicationRole role = await RoleManager.FindByIdAsync(id);
             if (role != null)
@@ -78,7 +89,7 @@ namespace ASP4_Forum.Controllers
             }
             else
             {
-                return View("Error", new string[] { "Роль не найдена" });
+                return View("Error", new string[] { "Role not found" });
             }
         }
 
@@ -101,7 +112,7 @@ namespace ASP4_Forum.Controllers
 
             IEnumerable<ApplicationUser> nonMembers = UserManager.Users.Except(members);
 
-            return View(new RoleEditModel
+            return PartialView(new RoleEditModel
             {
                 Role = role,
                 Members = members,
