@@ -24,9 +24,11 @@
                     {
                         <div class="card mb-3">
                             <div class="card-header bg-bluedark">
-                                <a class="card-link h5 text-white" data-toggle="collapse" href="#part_@part.ID">
-                                @part.Name
+                                
+                                <a class="card-link" data-toggle="collapse" href="#part_@part.ID">
+                                    <img src="~/Icons/partition.png" alt="part ico" class="icoimage" />                                    
                                 </a>
+                                <a class="card-link h5 text-white" href="/Home/@part.ID">@part.Name</a>
                                 <div class="float-right">@part.Themes.Count @(part.Themes.Count == 1 ? "Theme" : "Themes")</div>
                             </div>
                             <div id="part_@part.ID" class="collapse show">
@@ -52,10 +54,12 @@
                                                 {
 
                                                     <tr>
+                                                        <td><img src="~/Icons/1.png" alt="img" class="icoimage"/></td>
                                                         <td class="text-left pl-3">
                                                             <a class="text-decoration-none" href="/Home/Theme/@theme.ID">
                                                                 @theme.Name
                                                             </a>
+                                                            <div>1</div>
                                                         </td>
                                                         <td>
                                                             @theme.Date.ToLocalTime()

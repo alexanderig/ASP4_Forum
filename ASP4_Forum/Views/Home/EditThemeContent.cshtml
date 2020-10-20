@@ -1,7 +1,7 @@
 ﻿
 @using ASP4_Forum.Models.ViewModels
 @using ASP4_Forum.Models
-@model SectionEditModel
+@model ThemeEditModel
 @{
     ViewBag.Title = "Edit Theme";
 }
@@ -18,92 +18,92 @@
 
 
         @Html.ValidationSummary()
-        @using (Html.BeginForm("EditSectionContent", "Home", FormMethod.Post, htmlAttributes: new { id = "formcr" }))
+        @using (Html.BeginForm("EditThemeContent", "Home", FormMethod.Post, htmlAttributes: new { id = "formcr" }))
         {
-            <div class="modal-body">
-                <input type="hidden" name="ID" value="@Model.Section.ID" />
-                <div class="panel panel-primary">
-                    <div class="panel-heading">Add to section <b>@Model.Section.Name</b></div>
-                    <table class="table table-striped tble table-hover table-bordered">
-                        <colgroup>
-                            <col class="text-left" />
-                            <col />
-                        </colgroup>
-                        @if (Model.NonMembers.Count() == 0)
-                        {
-                            <thead>
-                                <tr>
-                                    <th colspan="2">No partitions</th>
-                                </tr>
-                            </thead>
-                        }
-                        else
-                        {
+    <div class="modal-body">
+        <input type="hidden" name="ID" value="@Model.Theme.ID" />
+        @*
+            <div class="panel panel-primary">
+            <div class="panel-heading">Add to section <b>@Model.Section.Name</b></div>
+            <table class="table table-striped tble table-hover table-bordered">
+                <colgroup>
+                    <col class="text-left"/>
+                    <col />
+                </colgroup>
+                @if (Model.NonMembers.Count() == 0)
+                {
+                    <thead>
+                        <tr>
+                            <th colspan="2">No partitions</th>
+                        </tr>
+                    </thead>
+                }
+                else
+                {
 
-                            <tr class="text-center">
-                                <th style="width:70%" class="table-primary">Partition Name</th>
-                                <th class="table-success">Add to Section</th>
-                            </tr>
-                            foreach (Partition partition in Model.NonMembers)
-                            {
-                                <tr>
-                                    <td>@partition.Name</td>
-                                    <td class="text-center">
-                                        <input type="checkbox" name="IdsToAdd" value="@partition.ID">
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    </table>
-                </div>
+                    <tr class="text-center">
+                        <th style="width:70%" class="table-primary">Partition Name</th>
+                        <th class="table-success">Add to Section</th>
+                    </tr>
+                    foreach (Partition partition in Model.NonMembers)
+                    {
+                        <tr>
+                            <td>@partition.Name</td>
+                            <td class="text-center">
+                                <input type="checkbox" name="IdsToAdd" value="@partition.ID">
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>*@
 
-                <div class="panel panel-primary">
-                    <div class="panel-heading text-danger">Remove from section <b>@Model.Section.Name</b></div>
-                    <table class="table table-striped table-bordered table-hover">
-                        @if (Model.Members.Count() == 0)
-                        {
+        <div class="panel panel-primary">
+            <div class="panel-heading text-danger">Reassign <b>@Model.Theme.Name</b> @Model.Posts Posts to other Theme</div>
+            <table class="table table-striped table-bordered table-hover">
+                @if (Model.Posts == 0)
+                {
 
-                            <tr>
-                                <th colspan="2" class="table-warning">No Partitions in this Section</th>
-                            </tr>
+                    <tr>
+                        <th colspan="2" class="table-warning">No Posts in this Theme</th>
+                    </tr>
 
-                        }
-                        else
-                        {
+                }
+                else
+                {
 
-                            <tr class="text-center">
-                                <th style="width:70%" class="table-primary">Partition Name</th>
-                                <th class="table-danger">Remove from section</th>
-                            </tr>
-                            foreach (Partition partition in Model.Members)
-                            {
-                                <tr>
-                                    <td>@partition.Name</td>
-                                    <td class="text-center">
-                                        @*<input type="checkbox" name="IdsToDelete" value="@user.Id">*@
-                                        <input type="hidden" name="IDChild" value="@partition.ID" />
-                                        <select name="IDParent">
-                                            @foreach (Section mysection in ViewBag.Sections)
-                                            {
-                                                if (partition.Section.ID == mysection.ID)
-                                                {
-                                                    <option value="@mysection.ID" selected>@mysection.Name</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@mysection.ID">@mysection.Name</option>
-                                                }
+                    <tr class="text-center">
+                        <th style="width:70%" class="table-primary">Theme Name</th>
+                        <th class="table-danger">Reassign to:</th>
+                    </tr>
 
-                                            }
-                                        </select>
+                    <tr>
+                        <td>@Model.Theme.Name</td>
+                        <td class="text-center">
+                            @*<input type="checkbox" name="IdsToDelete" value="@user.Id">*@
+                            <input type="hidden" name="IDChild" value="@Model.Theme.ID" />
+                            <select name="IDParent">
+                                @foreach (Theme mytheme in ViewBag.Themes)
+                                {
+                                    if (Model.Theme.ID == mytheme.ID)
+                                    {
+                                        <option value="@mytheme.ID" selected>@mytheme.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@mytheme.ID">@mytheme.Name</option>
+                                    }
 
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    </table>
-                </div>
-            </div>
+                                }
+                            </select>
+
+                        </td>
+                    </tr>
+
+                }
+            </table>
+        </div>
+    </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success col-3 mr-5 ml-auto">Save changes</button>
                 @*@Html.ActionLink("Cancel and return", "Index", null, new { @class = "btn btn-warning col-3 mr-auto" })*@

@@ -218,6 +218,7 @@
     <Compile Include="Models\ViewModels\RoleViewModels.cs" />
     <Compile Include="Models\ViewModels\SectionEditModel.cs" />
     <Compile Include="Models\ViewModels\SectionModificationModel.cs" />
+    <Compile Include="Models\ViewModels\ThemeEditModel.cs" />
     <Compile Include="Models\ViewModels\ThemeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalRHub\ForumHub.cs" />
@@ -532,6 +533,13 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Icons\1.png" />
+    <Content Include="Icons\2.png" />
+    <Content Include="Icons\3.png" />
+    <Content Include="Icons\4.png" />
+    <Content Include="Icons\closed.png" />
+    <Content Include="Icons\partition.png" />
+    <Content Include="Icons\warning.png" />
     <Content Include="libman.json" />
     <Content Include="Content\bootstrap\dist\css\bootstrap-grid.css.map" />
     <Content Include="Content\bootstrap\dist\css\bootstrap-grid.min.css.map" />
@@ -841,7 +849,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Icons\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

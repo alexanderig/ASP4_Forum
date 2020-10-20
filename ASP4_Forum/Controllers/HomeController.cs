@@ -13,7 +13,6 @@ using System.Web;
 //using System.Web.Http;
 //using System.Web.Http;
 using System.Web.Mvc;
-using System.Web.UI.WebControls.WebParts;
 using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 //using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 
@@ -112,7 +111,7 @@ namespace ASP4_Forum.Controllers
         public async Task<ActionResult> Partitions()
         {
             List<Partition> partitions = await DBContext.Partitions.ToListAsync();
-            
+
             return View(partitions);
         }
 
@@ -120,7 +119,7 @@ namespace ASP4_Forum.Controllers
         public ActionResult CreatePartition()
         {
             ViewBag.ListSections = new SelectList(DBContext.Sections, "ID", "Name");
-            return PartialView(new PartitionViewModel { Name = "", Section = null});
+            return PartialView(new PartitionViewModel { Name = "", Section = null });
         }
 
         [HttpPost]
@@ -131,7 +130,7 @@ namespace ASP4_Forum.Controllers
                 Section section = DBContext.Sections.Find(vmpart.SectionID);
                 if (section == null)
                     return View("Error");
-                Partition partition = new Partition { Name = vmpart.Name, Date = DateTime.Now, Section = section};
+                Partition partition = new Partition { Name = vmpart.Name, Date = DateTime.Now, Section = section };
                 DBContext.Partitions.Add(partition);
                 await DBContext.SaveChangesAsync();
                 return RedirectToAction("Partitions");
@@ -149,7 +148,7 @@ namespace ASP4_Forum.Controllers
             Partition partition = await DBContext.Partitions.FindAsync(id);
             if (partition == null)
                 return HttpNotFound();
-            if(partition.Themes.Count > 0)
+            if (partition.Themes.Count > 0)
             {
                 ModelState.AddModelError("", "Partition contains Themes");
             }
@@ -171,7 +170,7 @@ namespace ASP4_Forum.Controllers
             {
                 return HttpNotFound();
             }
-            if(partition.Themes.Count() > 0)
+            if (partition.Themes.Count() > 0)
             {
                 ModelState.AddModelError("", "Partition contains Themes");
                 return PartialView(partition);
@@ -286,17 +285,17 @@ namespace ASP4_Forum.Controllers
             return View(sections);
         }
 
-       [HttpGet]
+        [HttpGet]
         public ActionResult CreateSection()
         {
-            return PartialView(new Section { Name = "", Date = DateTime.Now, Partitions = null});
+            return PartialView(new Section { Name = "", Date = DateTime.Now, Partitions = null });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateSection(Section section)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 section.Date = DateTime.Now;
                 DBContext.Sections.Add(section);
@@ -324,10 +323,10 @@ namespace ASP4_Forum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditSectionName(Section editedsection)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 Section section = await DBContext.Sections.FindAsync(editedsection.ID);
-                if(section != null)
+                if (section != null)
                 {
                     section.Name = editedsection.Name;
                     DBContext.Entry(section).State = EntityState.Modified;
@@ -340,7 +339,7 @@ namespace ASP4_Forum.Controllers
         }
 
 
-        
+
         [HttpGet]
         public async Task<ActionResult> DelSection(int? id)
         {
@@ -353,8 +352,8 @@ namespace ASP4_Forum.Controllers
             if (section.Partitions.Count() > 0)
             {
                 ModelState.AddModelError("", "Section contains Partitions");
-             //   SectionModel sectionModel = new SectionModel { ID = section.ID, Date = section.Date, Name = section.Name };
-               // return PartialView(sectionModel);
+                //   SectionModel sectionModel = new SectionModel { ID = section.ID, Date = section.Date, Name = section.Name };
+                // return PartialView(sectionModel);
             }
 
             //Section sectionModel = new SectionModel { ID = section.ID, Date = section.Date, Name = section.Name };
@@ -369,9 +368,9 @@ namespace ASP4_Forum.Controllers
             {
                 return HttpNotFound();
             }
-                
+
             Section section = await DBContext.Sections.FindAsync(id);
-            if(section == null)
+            if (section == null)
             {
                 return HttpNotFound();
             }
@@ -394,11 +393,12 @@ namespace ASP4_Forum.Controllers
                 return HttpNotFound();
             Section section = await DBContext.Sections.FindAsync(id);
             // string[] memberIDs = section.Partitions.Where(p => p.ID;
-            try {
+            try
+            {
                 IEnumerable<Partition> members = section.Partitions;// Where(x => memberIDs.Any(y => y == x.Id));
 
                 IEnumerable<Partition> nonMembers = DBContext.Partitions.ToList().Except(members).ToList();// UserManager.Users.Except(members);
-               
+
                 ViewBag.Sections = await DBContext.Sections.ToListAsync();
                 return PartialView(new SectionEditModel
                 {
@@ -407,12 +407,12 @@ namespace ASP4_Forum.Controllers
                     NonMembers = nonMembers
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error");
             }
-           
-           
+
+
         }
 
         [HttpPost]
@@ -429,7 +429,7 @@ namespace ASP4_Forum.Controllers
                     partition.Section = section;
                     DBContext.Entry(partition).State = EntityState.Modified;
                 }
-                if(model.IDChild != null)
+                if (model.IDChild != null)
                 {
                     for (int i = 0; i < model.IDChild.Length; i++)
                     {
@@ -443,7 +443,7 @@ namespace ASP4_Forum.Controllers
 
                     }
                 }
-               
+
                 await DBContext.SaveChangesAsync();
                 return RedirectToAction("Sections");
 
@@ -468,7 +468,7 @@ namespace ASP4_Forum.Controllers
         [HttpGet]
         public ActionResult CreateTheme()
         {
-           // return PartialView(new Theme { Name = "", Date = DateTime.Now, Partitions = null });
+            // return PartialView(new Theme { Name = "", Date = DateTime.Now, Partitions = null });
             ViewBag.ListPartitions = new SelectList(DBContext.Partitions, "ID", "Name");
             return PartialView(new ThemeViewModel { Name = "", Partition = null });
         }
@@ -483,13 +483,13 @@ namespace ASP4_Forum.Controllers
                 if (partition == null)
                     return View("Error");
                 ApplicationUser user = await UserManager.FindByNameAsync(HttpContext.User.Identity.Name);
-                if(user != null)
+                if (user != null)
                 {
-                    Theme theme = new Theme { Name = thememodel.Name, Date = DateTime.Now, Partition = partition, Creator = user};
+                    Theme theme = new Theme { Name = thememodel.Name, Date = DateTime.Now, Partition = partition, Creator = user };
                     DBContext.Themes.Add(theme);
                     await DBContext.SaveChangesAsync();
                 }
-                
+
                 return RedirectToAction("Themes");
             }
 
@@ -572,20 +572,22 @@ namespace ASP4_Forum.Controllers
         {
             if (id == null)
                 return HttpNotFound();
-            Section section = await DBContext.Sections.FindAsync(id);
+            Theme theme = await DBContext.Themes.FindAsync(id);
             // string[] memberIDs = section.Partitions.Where(p => p.ID;
             try
             {
-                IEnumerable<Partition> members = section.Partitions;// Where(x => memberIDs.Any(y => y == x.Id));
+                //IEnumerable<Theme> members = ; //theme.Posts .Partitions;// Where(x => memberIDs.Any(y => y == x.Id));
+                // IEnumerable<Theme> members = DBContext.Themes.Where(x => x.ID == theme.ID);
 
-                IEnumerable<Partition> nonMembers = DBContext.Partitions.ToList().Except(members).ToList();// UserManager.Users.Except(members);
+                // IEnumerable<Theme> nonMembers = DBContext.Themes.ToList().Except(members).ToList();// UserManager.Users.Except(members);
 
-                ViewBag.Sections = await DBContext.Sections.ToListAsync();
-                return PartialView(new SectionEditModel
+                ViewBag.Themes = await DBContext.Themes.ToListAsync();
+                return PartialView(new ThemeEditModel
                 {
-                    Section = section,
-                    Members = members,
-                    NonMembers = nonMembers
+                    Theme = theme,
+                    Posts = theme.Posts.Count
+                    // Members = members,
+                    // NonMembers = nonMembers
                 });
             }
             catch (Exception ex)
@@ -602,34 +604,30 @@ namespace ASP4_Forum.Controllers
 
             if (ModelState.IsValid)
             {
-                Section section = await DBContext.Sections.FindAsync(model.ID);
-                foreach (int partId in model.IdsToAdd ?? new int[] { })
-                {
+                Theme owner = await DBContext.Themes.FindAsync(model.ID);
 
-                    Partition partition = await DBContext.Partitions.FindAsync(partId);
-                    partition.Section = section;
-                    DBContext.Entry(partition).State = EntityState.Modified;
-                }
-                if (model.IDChild != null)
+                if (model.IDChild != null && model.IDParent != null)
                 {
-                    for (int i = 0; i < model.IDChild.Length; i++)
+                    //Theme owner = await DBContext.Themes.FindAsync(model.IDChild[0]);
+                    Theme newparent = await DBContext.Themes.FindAsync(model.IDParent[0]);
+                    if (owner != null && newparent != null && !newparent.Equals(owner))
                     {
-                        Partition partition = await DBContext.Partitions.FindAsync(model.IDChild[i]);
-                        Section parent = await DBContext.Sections.FindAsync(model.IDParent[i]);
-                        if (partition != null && parent != null && !parent.Equals(section))
+                        foreach (Post post in owner.Posts)
                         {
-                            partition.Section = parent;
-                            DBContext.Entry(partition).State = EntityState.Modified;
+                            post.Theme = newparent;
+                            DBContext.Entry(post).State = EntityState.Modified;
                         }
 
+
                     }
+
                 }
 
                 await DBContext.SaveChangesAsync();
-                return RedirectToAction("Sections");
+                return RedirectToAction("Themes");
 
             }
-            return View("Error", new string[] { "Section not found" });
+            return View("Error", new string[] { "Theme not found" });
         }
 
 
@@ -640,7 +638,7 @@ namespace ASP4_Forum.Controllers
         //[AcceptVerbs("Get", "Post")]
         public JsonResult CheckSection(string name)
         {
-         Section section = DBContext.Sections.Where(c => c.Name.ToString().ToLower() == name.ToLower()).FirstOrDefault();
+            Section section = DBContext.Sections.Where(c => c.Name.ToString().ToLower() == name.ToLower()).FirstOrDefault();
             if (section != null)
                 return Json(false, JsonRequestBehavior.AllowGet);
 
