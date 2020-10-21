@@ -1,0 +1,99 @@
+﻿@using ASP4_Forum.Models
+@using ASP4_Forum.Models.ViewModels
+@model Theme
+@{
+    ViewBag.Title = "Index";
+    int postcount = Model.Posts.Count;
+    string lastcomment = postcount != 0 ? Model.Posts.ElementAt(postcount - 1).Owner.UserName : "nobody";
+}
+
+@section styles{
+    <link rel="Stylesheet" href="@Href("~/Content/Tablestyles.css")" />
+}
+
+<div class="container-fluid">
+
+    <h3 class="text-primary">@Model.Name</h3>
+    <h6>Theme created: @Model.Date.ToLocalTime()</h6>
+    <h6>Posts total: @postcount</h6>
+    <h6>Last post by: @lastcomment</h6>
+    <div class="main">
+        @{
+            foreach (Post post in Model.Posts)
+            {
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="row2">
+                                <div class="txtbold">@post.Owner.UserName</div>
+                            </td>
+                            <td class="row2 rwidth">
+                                @post.Date
+                                <div style="float: right; padding-right: 10px"><strong>Message #2</strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="post2">
+                                <div>
+                                    <p>city: <span>Киев</span></p>
+                                    <p>e-mail: <span>superman@mail.ua</span></p>
+                                    <p>site url: <span>http://mansuper.narod.ru</span></p>
+                                </div>
+                            </td>
+                            <td class="post2 rwidth">
+                                <div class='user'>
+                                    По некоторым признакам похоже на проблему невключения экрана из-за включённой функции разблокировки двойным тапом и блокировки от нажатий в кармане.
+                                    Так, чтобы наглухо зависал, повторюсь не было - предполагаю, что это проблемы установленного Вами стороннего софта, что-то конфликтует и система зависает.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="row2 botline"></td>
+                            <td class="row2 botline rwidth"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="footer"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+        }
+
+        @{
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="row2">
+                                <div class="txtbold"></div>
+                            </td>
+                            <td class="row2 rwidth">
+                                2020-10-21 Wed 12:03:09
+                                <div style="float: right; padding-right: 10px"><strong>Message #9</strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="post2" colspan="2">
+                                <div class="composer"></div>
+                                <div><input class="g-btn" id="save" type='submit' value=' Send '></div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="row2 botline"></td>
+                            <td class="row2 botline rwidth"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="footer"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+        }
+
+    </div>
+</div>
+@section Scripts {
+    @{Html.RenderPartial("_ScriptPartial");}
+}

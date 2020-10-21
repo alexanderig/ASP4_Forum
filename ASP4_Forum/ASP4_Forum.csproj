@@ -201,6 +201,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\ThemeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -530,6 +531,7 @@
     <Content Include="Content\bootstrap\js\src\tools\sanitizer.js" />
     <Content Include="Content\bootstrap\js\src\tooltip.js" />
     <Content Include="Content\bootstrap\js\src\util.js" />
+    <Content Include="Content\Tablestyles.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -846,6 +848,8 @@
     <Content Include="Views\Home\DelTheme.cshtml" />
     <Content Include="Views\Home\EditThemeName.cshtml" />
     <Content Include="Views\Home\EditThemeContent.cshtml" />
+    <Content Include="Views\Theme\Index.cshtml" />
+    <Content Include="Views\Theme\_ScriptPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

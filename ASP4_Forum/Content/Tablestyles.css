@@ -1,0 +1,166 @@
+﻿.header {
+    display: flex;
+    height: 30px;
+    width: 100%;
+    background-color: darkorange;
+}
+
+.headertext {
+    align-self: center;
+    color: white;
+    font-weight: bold;
+}
+
+a {
+    margin: 10px;
+    color: brown;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+    a:hover {
+        color: white;
+        text-decoration: none;
+    }
+
+.main {
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #5176b5;
+}
+
+.admin {
+    border: 1px dotted black;
+    border-left: 5px solid black;
+    margin: 10px;
+    margin-left: 20px;
+    padding: 5px;
+}
+
+.user {
+    margin: 10px;
+    padding: 5px;
+}
+
+.footer {
+    background-color: #5176b5;
+    height: 20px;
+    width: 100%;
+}
+
+.txtbold {
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-style: italic;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 2px;
+}
+
+td {
+    display: table-cell;
+    vertical-align: inherit;
+}
+
+.row2 {
+    background: #DDECFF;
+    word-break: break-word;
+    vertical-align: middle;
+    min-width: 200px;
+    height: 30px;
+}
+
+.rwidth {
+    width: 100%;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.post2 {
+    background: #F0F7FF;
+    vertical-align: top;
+}
+
+.botline {
+    border-top: 1px solid #5176b5;
+}
+
+div.input {
+    display: flex;
+    overflow: hidden;
+    margin-left: 5px;
+    justify-content: space-around;
+}
+
+body {
+    background: #FFF;
+    color: #222;
+    font-family: Verdana, Tahoma, Arial, "Trebuchet MS", Sans-Serif, Georgia, Courier, "Times New Roman", Serif;
+    font-size: 12px;
+    line-height: 135%;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    -webkit-text-size-adjust: 100%;
+}
+
+.g-btn {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline-block;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    margin: 1px 1px;
+    padding: 4px 10px;
+    font-size: 10px;
+    line-height: 10px;
+    font-weight: bold;
+    font-style: normal;
+    font-family: "Segoe UI", "Helvetica Neue", Helvetica, Tahoma, Arial, sans-serif;
+    vertical-align: middle;
+    background: #7eb8e5;
+    background: -moz-linear-gradient(top, #e8f4fe 0%, #7eb8e5 100%);
+    background: -webkit-linear-gradient(top, #e8f4fe 0%, #7eb8e5 100%);
+    background: linear-gradient(to bottom, #e8f4fe 0%, #7eb8e5 100%);
+    border-color: #598aad;
+    color: #326b92;
+    box-shadow: #598aad 0 2px 3px -2px;
+    background-color: #D0D0D0;
+    border: solid 1px currentColor;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 1px;
+    min-height: 19px;
+    word-break: normal;
+}
+
+.ed-textarea {
+    clear: both;
+    width: 98%;
+    border: 1px;
+    color: black;
+    padding: 10px 0px 0px 0px;
+    margin: 0px;
+    background: white;
+    font-size: 13px;
+    font-family: verdana, helvetica, sans-serif;
+    resize: vertical;
+    min-height: 70px;
+}
+
+strong {
+    font-weight: bold;
+    font-style: italic;
+    color: #326b92;
+}
+
+span {
+    font-weight: bold;
+    font-style: italic;
+    font-family: "Segoe UI", "Helvetica Neue", Helvetica, Tahoma, Arial, sans-serif;
+}

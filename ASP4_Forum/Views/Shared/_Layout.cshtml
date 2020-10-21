@@ -8,43 +8,45 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @*@Scripts.Render("~/bundles/jqueryval")*@
-   
+
     <script src="~/signalr/hubs"></script>
 
     @Scripts.Render("~/bundles/bootstrap")
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-<style>
-    .collapsing {
-        background-color: #80ced6;
-    }
+    @RenderSection("styles", false)
+    <style>
+        .collapsing {
+            background-color: #80ced6;
+        }
 
 
-    table.mtable {
-        background-color: #deeaee;
-        border: 1px solid #618685;
-        width: 100%;
-        margin: 0px;
-        border-bottom: 10px solid #618685;
-        text-align:center;
-    }
+        table.mtable {
+            background-color: #deeaee;
+            border: 1px solid #618685;
+            width: 100%;
+            margin: 0px;
+            border-bottom: 10px solid #618685;
+            text-align: center;
+        }
 
-    thead.mtable-header {
-        background-color: #36486b;
-        text-align: center;
-        color: white;
-    }
+        thead.mtable-header {
+            background-color: #36486b;
+            text-align: center;
+            color: white;
+        }
 
-    .bg-bluedark {
-        background-color: #3B5998;
-    }
-    .bg-lightgrey {
-        background-color: #F7F7F7;
-    }
+        .bg-bluedark {
+            background-color: #3B5998;
+        }
 
-    img.icoimage{
-        width: 25px;
-    }
-</style>
+        .bg-lightgrey {
+            background-color: #F7F7F7;
+        }
+
+        img.icoimage {
+            width: 25px;
+        }
+    </style>
 </head>
 <body>
    

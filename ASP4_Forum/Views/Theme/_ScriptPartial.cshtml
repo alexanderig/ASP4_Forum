@@ -3,7 +3,7 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.js"></script>
 <script type="text/javascript">
     $('.composer').summernote({
-        placeholder: 'Hello stand alone ui',
+        placeholder: 'Write text message here and post',
         height: 350,
         toolbar: [
             ['style', ['style']],
@@ -23,8 +23,10 @@
         //alert("ready");
         $('#save').click(function () {
             var composertext = $('.composer').summernote('code');
+            //alert('works');
             //$('#result').empty();
             //$('#result').html(composertext);
+
         });
     });
     //alert($('Getbutton').val());
