@@ -23,6 +23,39 @@
         //alert("ready");
         $('#save').click(function () {
             var composertext = $('.composer').summernote('code');
+            var UserName = "@HttpContext.Current.User.Identity.Name";
+            var ThemeID = $('#themeid').val();
+            alert(ThemeID);
+            var form = new FormData();
+            form.append("themeid", ThemeID);
+            form.append("post", composertext);
+            form.append("username", UserName);
+            $.ajax({
+                url: @Url.Action("Post", "Theme"),
+                method: 'post',
+                data: form,
+                success: function () {
+                    console.dir()
+                },
+
+                error: function (jqXHR, exception) {
+                    if (jqXHR.status === 0) {
+                        alert('Not connect. Verify Network.');
+                    } else if (jqXHR.status == 404) {
+                        alert('Requested page not found (404).');
+                    } else if (jqXHR.status == 500) {
+                        alert('Internal Server Error (500).');
+                    } else if (exception === 'parsererror') {
+                        alert('Requested JSON parse failed.');
+                    } else if (exception === 'timeout') {
+                        alert('Time out error.');
+                    } else if (exception === 'abort') {
+                        alert('Ajax request aborted.');
+                    } else {
+                        alert('Uncaught Error. ' + jqXHR.responseText);
+                    }
+                }
+            })
             //alert('works');
             //$('#result').empty();
             //$('#result').html(composertext);

@@ -216,6 +216,7 @@
     <Compile Include="Models\ViewModels\PartitionViewModel.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\PartitionEditModel.cs" />
+    <Compile Include="Models\ViewModels\PostViewModel.cs" />
     <Compile Include="Models\ViewModels\RoleViewModels.cs" />
     <Compile Include="Models\ViewModels\SectionEditModel.cs" />
     <Compile Include="Models\ViewModels\SectionModificationModel.cs" />

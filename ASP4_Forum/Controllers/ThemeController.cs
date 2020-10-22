@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
+using ASP4_Forum.Models.ViewModels;
 
 namespace ASP4_Forum.Controllers
 {
@@ -35,6 +36,12 @@ namespace ASP4_Forum.Controllers
         {
             Theme theme = await DBContext.Themes.FindAsync(id);
             return View(theme);
+        }
+
+
+        public async Task<ActionResult> Post(PostViewModel postmodel)
+        {
+
         }
     }
 }

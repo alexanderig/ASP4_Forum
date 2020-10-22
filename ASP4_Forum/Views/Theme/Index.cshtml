@@ -1,5 +1,6 @@
 ﻿@using ASP4_Forum.Models
 @using ASP4_Forum.Models.ViewModels
+
 @model Theme
 @{
     ViewBag.Title = "Index";
@@ -17,6 +18,7 @@
     <h6>Theme created: @Model.Date.ToLocalTime()</h6>
     <h6>Posts total: @postcount</h6>
     <h6>Last post by: @lastcomment</h6>
+    <input type="hidden" id="themeid" value="@Model.ID"/>
     <div class="main">
         @{
             foreach (Post post in Model.Posts)
@@ -60,7 +62,7 @@
         }
 
         @{
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 <table>
                     <tbody>
