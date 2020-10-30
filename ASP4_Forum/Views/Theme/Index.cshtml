@@ -76,8 +76,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="post2" colspan="2">
-                                <div class="composer"></div>
+                            <td class="post2" colspan="2" >
+                                <div class="composer" ></div>
                                 <div><input class="g-btn" id="save" type='submit' value=' Send '></div>
 
                             </td>
@@ -93,9 +93,47 @@
                 </table>
             }
         }
-
+        <table>
+            <tbody>
+                <tr>
+                    <td class="row2">
+                        <div class="txtbold">Name</div>
+                    </td>
+                    <td class="row2 rwidth">
+                        Date
+                        <div style="float: right; padding-right: 10px"><strong>Message #2</strong></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="post2">
+                        <div>
+                            <p>city: <span>Киев</span></p>
+                            <p>e-mail: <span>superman@mail.ua</span></p>
+                            <p>site url: <span>http://mansuper.narod.ru</span></p>
+                        </div>
+                    </td>
+                    <td class="post2 rwidth">
+                        <div class='user' id="postcontent">
+                            По некоторым признакам похоже на проблему невключения экрана из-за включённой функции разблокировки двойным тапом и блокировки от нажатий в кармане.
+                            Так, чтобы наглухо зависал, повторюсь не было - предполагаю, что это проблемы установленного Вами стороннего софта, что-то конфликтует и система зависает.
+                        </div>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td class="row2 botline"></td>
+                    <td class="row2 botline rwidth">
+                        <div><input class="g-btn" id="editcode" type='submit' value=' EDIT '></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="footer"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+
 </div>
 @section Scripts {
-    @{Html.RenderPartial("_ScriptPartial");}
+    @{Html.RenderPartial("_ScriptThemePartial");}
 }

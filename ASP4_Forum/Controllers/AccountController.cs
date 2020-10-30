@@ -106,7 +106,7 @@ namespace ASP4_Forum.Controllers
             }
 
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(new LoginViewModel());
         }
 
         //

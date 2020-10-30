@@ -850,7 +850,7 @@
     <Content Include="Views\Home\EditThemeName.cshtml" />
     <Content Include="Views\Home\EditThemeContent.cshtml" />
     <Content Include="Views\Theme\Index.cshtml" />
-    <Content Include="Views\Theme\_ScriptPartial.cshtml" />
+    <Content Include="Views\Theme\_ScriptThemePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -7,6 +7,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
 using ASP4_Forum.Models.ViewModels;
+using Microsoft.Ajax.Utilities;
+using System.Web.WebPages;
 
 namespace ASP4_Forum.Controllers
 {
@@ -38,10 +40,18 @@ namespace ASP4_Forum.Controllers
             return View(theme);
         }
 
-
-        public async Task<ActionResult> Post(PostViewModel postmodel)
+        [HttpPost]
+        public async Task<JsonResult> PostSave(PostViewModel model)
         {
-
+            int a = 10;
+            string aa = Request.Form["themeid"];
+            string tt = "<p>Hello</p>";
+            string cc = Request.Form["username"];
+            string bb = Request.Form["posttext"].As<string>();
+           
+            
+            //Theme theme = await DBContext.Themes.FindAsync(postmodel.ThemeID);
+            return Json(model.PostText);
         }
     }
 }

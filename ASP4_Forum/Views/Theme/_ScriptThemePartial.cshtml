@@ -4,38 +4,50 @@
 <script type="text/javascript">
     $('.composer').summernote({
         placeholder: 'Write text message here and post',
-        height: 350,
+        height: 350,        
         toolbar: [
             ['style', ['style']],
             ['font', ['bold', 'underline', 'clear', 'fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['table', ['table']],
-            ['insert', ['link', 'hr']],
-            ['view', ['codeview', 'help']]
+            ['insert', ['link', 'hr', 'picture']],
+           
         ]
     });
+    $('.composer').summernote('justifyLeft');
+   
     //$('.composer').summernote('insertImage', url, function ($image) {
     //    $image.css('width', $image.width() / 3);
     //    $image.attr('data-filename', 'retriever');
     //});
     $(document).ready(function () {
         //alert("ready");
-        $('#save').click(function () {
+        $('#save').click(function (e) {
+            e.preventDefault();
             var composertext = $('.composer').summernote('code');
-            var UserName = "@HttpContext.Current.User.Identity.Name";
-            var ThemeID = $('#themeid').val();
-            alert(ThemeID);
+            var UName = "@HttpContext.Current.User.Identity.Name";
+            var Themeid = $('#themeid').val();
+            //alert(ThemeID);
             var form = new FormData();
-            form.append("themeid", ThemeID);
-            form.append("post", composertext);
-            form.append("username", UserName);
+            form.append("ThemeID", Themeid);
+            form.append("PostText", composertext);
+            form.append("UserName", UName);
             $.ajax({
-                url: @Url.Action("Post", "Theme"),
-                method: 'post',
-                data: form,
-                success: function () {
-                    console.dir()
+                type: "POST",
+                url: '@Url.Action("PostSave", "Theme")',
+                //contentType: false,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+               // processData: false,
+                //data: form,
+                data: JSON.stringify({
+                    ThemeID: Themeid,
+                    PostText: composertext,
+                    UserName: UName
+                }),
+                success: function (data) {
+                    $('#postcontent').html(data);
                 },
 
                 error: function (jqXHR, exception) {
@@ -61,6 +73,10 @@
             //$('#result').html(composertext);
 
         });
+        $('#editcode').click((e) => {
+            //e.preventDefault();
+            $('.composer').summernote('pasteHTML', $('#postcontent').html());             
+        })
     });
     //alert($('Getbutton').val());
 </script>
