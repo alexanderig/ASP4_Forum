@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 using ASP4_Forum.Models.ViewModels;
 using Microsoft.Ajax.Utilities;
 using System.Web.WebPages;
+using System.Web.Helpers;
 
 namespace ASP4_Forum.Controllers
 {
     public class ThemeController : Controller
     {
         ApplicationDbContext _context;
-
+        ApplicationUserManager _umanager;
         public ApplicationDbContext DBContext
         {
             get
@@ -27,6 +28,20 @@ namespace ASP4_Forum.Controllers
                 _context = value;
             }
         }
+
+        public ApplicationUserManager Usermanager
+        {
+            get
+            {
+                return _umanager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _umanager = value;
+            }
+        }
+
+        public ThemeController() { }
 
         // GET: Theme
         //public ActionResult Index()
@@ -43,14 +58,27 @@ namespace ASP4_Forum.Controllers
         [HttpPost]
         public async Task<JsonResult> PostSave(PostViewModel model)
         {
-            int a = 10;
-            string aa = Request.Form["themeid"];
-            string tt = "<p>Hello</p>";
-            string cc = Request.Form["username"];
-            string bb = Request.Form["posttext"].As<string>();
-           
+            if(ModelState.IsValid)
+            {
+                Theme theme = await DBContext.Themes.FindAsync(model.ThemeID);
+                ApplicationUser user = await Usermanager.FindByNameAsync(model.UserName);
+                if (theme == null || user == null)
+                {
+                    return Json("error");
+                }
+                Post post = new Post();
+                post.Owner = user;
+                post.IsBanned = false;
+                post.Theme = theme;
+                post.Text = model.PostText;
+                post.Date = DateTime.Now;
+                post.EditedDate = DateTime.Now;
+                DBContext.Posts.Add(post);
+                //DBContext.Entry(post).State = System.Data.Entity.EntityState.Added; 
+                await DBContext.SaveChangesAsync();
+            }
             
-            //Theme theme = await DBContext.Themes.FindAsync(postmodel.ThemeID);
+            
             return Json(model.PostText);
         }
     }
