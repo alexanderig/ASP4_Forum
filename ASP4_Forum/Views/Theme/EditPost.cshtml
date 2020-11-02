@@ -1,0 +1,72 @@
+﻿@using ASP4_Forum.Models
+@using ASP4_Forum.Models.ViewModels
+@model Post
+@{
+    ViewBag.Title = "EditPost";
+}
+
+
+@section styles{
+    <link rel="Stylesheet" href="@Href("~/Content/Tablestyles.css")" />
+}
+
+<div class="container-fluid">
+    <h3 class="text-primary">Edit post:<span class="text-primary"> #@Model.ID</span></h3>
+    <hr />
+    <div class="main">
+
+        <table>
+            <tbody>
+                <tr>
+                    <td class="row2">
+                        <div class="txtbold">@Model.Owner.UserName</div>
+                    </td>
+                    <td class="row2 rwidth">
+                        @Model.Date
+                        <div style="float: right; padding-right: 10px"><strong>Message @Model.ID</strong></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="post2">
+                        <div>
+                            <div class="mx-auto"><img class="img-fluid img-thumbnail" style="width: 100px" src="/@Model.Owner.AvatarURL" alt="avatar" /></div>
+                            <p>city: <span>@Model.Owner.City.CityName</span></p>
+                            <p>country : <span>@Model.Owner.Country.Name</span></p>
+                            <p>e-mail: <span>@Model.Owner.Email</span></p>
+
+                        </div>
+                    </td>
+                    <td class="post2 rwidth">
+                        @using (Html.BeginForm("EditPost", "Theme", FormMethod.Post))
+                        {
+                            <input type="hidden" name="id" value="@Model.ID" />
+                            <textarea id="composer" name="posttext"> @Html.Raw(Model.Text)</textarea>
+                            <input type="hidden" name="username" value="@HttpContext.Current.User.Identity.Name" />
+                            <input type="hidden" name="page" value="@ViewBag.page" />
+                            <div class="text-center"><input class="g-btn" style="min-width: 100px" type='submit' value=' Save Message '></div>
+                        }
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="row2 botline"></td>
+                    <td class="row2 botline rwidth">
+                        @{
+                            if (Model.Date != Model.EditedDate)
+                            {
+                                <i class="float-left">Edited: @Model.EditedDate</i>
+                            }
+
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="footer"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    @{Html.RenderPartial("_ScriptThemePartial");}
+}

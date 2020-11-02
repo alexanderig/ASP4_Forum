@@ -1,0 +1,225 @@
+﻿@using ASP4_Forum.Models
+@using ASP4_Forum.Models.ViewModels
+
+@model Theme
+@{
+    ViewBag.Title = "Index";
+    int postcount = Model.Posts.Count;
+    string lastcomment = postcount != 0 ? Model.Posts.ElementAt(postcount - 1).Owner.UserName : "nobody";
+
+
+}
+
+@section styles{
+    <link rel="Stylesheet" href="@Href("~/Content/Tablestyles.css")" />
+}
+
+<div class="container-fluid">
+
+    <h3 class="text-primary">@Model.Name</h3>
+
+    <div class="main text-left">
+
+        <div class="jumbotron py-4">
+            <span>Avatar  <img class="img-fluid img-thumbnail" style="width: 100px" src="/@Model.Creator.AvatarURL" alt="avatar" /></span>
+            <h5>Theme creator:<span class="text-primary"> @Model.Creator.UserName </span> </h5>
+            <h5>Theme created:<span class="text-primary"> @Model.Date.ToLocalTime()</span></h5>
+            <h5>Posts total:<span class="text-primary"> @postcount</span></h5>
+            <h5>Last post by:<span class="text-primary"> @lastcomment</span></h5>
+        </div>
+        <hr />
+        @{ int tiles = 10;
+            int items = Model.Posts.Count;
+            int page = ViewBag.page ?? 1;
+            int pcounter = page - 1;
+            int pages = items / tiles > 0 ? (items / tiles) : 0;
+            if (items % tiles > 0)
+            { pages++; }
+
+            int start = 0; int end = tiles;
+            if (page != 1)
+            {
+                start = page * tiles - tiles;
+                end = page * tiles;
+            }
+            end = end > items ? items : end;
+            start = start > items ? items : start;
+        }
+
+
+
+
+
+        @{
+            for (int i = start; i < end; i++)
+            {
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="row2">
+                                <div class="txtbold text-center">@Model.Posts.ElementAt(i).Owner.UserName</div>
+                            </td>
+                            <td class="row2 rwidth">
+                                @Model.Posts.ElementAt(i).Date
+                                <div style="float: right; padding-right: 10px"><strong>Message @Model.Posts.ElementAt(i).ID</strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="post2">
+                                <div>
+                                    <div class="mx-auto text-center"><img class="img-fluid img-thumbnail" style="width: 100px" src="/@Model.Posts.ElementAt(i).Owner.AvatarURL" alt="avatar" /></div>
+                                    <p>city: <span>@Model.Posts.ElementAt(i).Owner.City.CityName</span></p>
+                                    <p>country : <span>@Model.Posts.ElementAt(i).Owner.Country.Name</span></p>
+                                    <p>e-mail: <span>@Model.Posts.ElementAt(i).Owner.Email</span></p>
+
+                                </div>
+                            </td>
+                            <td class="post2 rwidth">
+                                <div>
+                                    @Html.Raw(Model.Posts.ElementAt(i).Text)
+
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="row2 botline"></td>
+                            <td class="row2 botline rwidth">
+                                @{
+                                    if (Model.Posts.ElementAt(i).Date != Model.Posts.ElementAt(i).EditedDate)
+                                    {
+                                        <i class="float-left">Edited: @Model.Posts.ElementAt(i).EditedDate</i>
+                                    }
+                                    if (Model.Posts.ElementAt(i).Owner.UserName == HttpContext.Current.User.Identity.Name)
+                                    {
+                                        <form action="/Theme/EditPost" method="get">
+                                            <input type="hidden" name="postid" value="@Model.Posts.ElementAt(i).ID" />
+                                            <input type="hidden" name="page" value="@page" />
+                                            <input class="g-btn float-right" type="submit" value="Edit" />
+                                        </form>
+
+
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="footer"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+        }
+
+        @{
+            if (HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                <table style="display:none" id="newpost">
+                    <tbody>
+                        <tr>
+                            <td class="row2">
+                                <div class="txtbold">@ViewBag.User.UserName</div>
+                            </td>
+                            <td class="row2 rwidth">
+                                @DateTime.Now.ToLocalTime()
+                                <div style="float: right; padding-right: 10px"><strong>New Message</strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="post2">
+                                <div>
+                                    <div class="mx-auto"><img class="img-fluid img-thumbnail" style="width: 100px" src="/@ViewBag.User.AvatarURL" alt="avatar" /></div>
+                                    <p>city: <span>@ViewBag.User.City.CityName</span></p>
+                                    <p>country : <span>@ViewBag.User.Country.Name</span></p>
+                                    <p>e-mail: <span>@ViewBag.User.Email</span></p>
+                                </div>
+                            </td>
+                            <td class="post2 rwidth" colspan="2">
+                                @using (Html.BeginForm("PostSave", "Theme", FormMethod.Post))
+                                {
+                                    <input type="hidden" name="id" value="@Model.ID" />
+                                    <textarea id="composer" name="posttext"></textarea>
+                                    <input type="hidden" name="username" value="@HttpContext.Current.User.Identity.Name" />
+                                    <input type="hidden" name="page" value="@page" />
+                                    <div class="text-center"><input class="g-btn" style="min-width: 100px" type='submit' value=' Post Message '></div>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="row2 botline"></td>
+                            <td class="row2 botline rwidth"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="footer"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table>
+
+                    <tr>
+                        <td class="row2"></td>
+                        <td class="row2 rwidth text-center">
+                            <button class="g-btn" onclick="NewPost(event)">Make New Post</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="footer"></td>
+                    </tr>
+                </table>
+
+            }
+        }
+
+    </div>
+
+</div>
+
+<ul class="pagination justify-content-center" style="margin:20px 0">
+    @if (page == 1)
+    {
+        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+    }
+    else
+    {
+        <li class="page-item"><a class="page-link"  href="/Theme/ThemeIndex?id=@Model.ID&page=@pcounter">Previous</a></li>
+    }
+    @{
+        pages = pages == 0 ? (pages + 1) : pages;
+        start = page > 1 ? (page - 1) : page;
+        start = start > 1 ? (start - 1) : start;
+        end = pages > page ? (page + 1) : page;
+        end = pages > end ? (end + 1) : end;
+        pcounter = page + 1;
+    }
+    @for (int i = start; i <= end; i++)
+    {
+        if (i == page)
+        {
+            <li class="page-item active"><a class="page-link"  href="/Theme/ThemeIndex?id=@Model.ID&page=@i">@i</a></li>
+        }
+        else
+        {
+            <li class="page-item"><a class="page-link" href="/Theme/ThemeIndex?id=@Model.ID&page=@i">@i</a></li>
+        }
+
+    }
+
+
+    @if (page == pages)
+    {
+        <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+    }
+    else
+    {
+        <li class="page-item"><a class="page-link" href="/Theme/ThemeIndex?id=@Model.ID&page=@pcounter">Next</a></li>
+    }
+
+</ul>
+
+
+
+
+
+@section Scripts {
+    @{Html.RenderPartial("_ScriptThemePartial");}
+}

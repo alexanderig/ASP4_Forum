@@ -557,7 +557,7 @@ namespace ASP4_Forum.Controllers
                 Theme theme = await DBContext.Themes.FindAsync(editedtheme.ID);
                 if (theme != null)
                 {
-                    theme.Name = theme.Name;
+                    theme.Name = editedtheme.Name;
                     DBContext.Entry(theme).State = EntityState.Modified;
                     await DBContext.SaveChangesAsync();
                     return RedirectToAction("Themes");
@@ -612,10 +612,13 @@ namespace ASP4_Forum.Controllers
                     Theme newparent = await DBContext.Themes.FindAsync(model.IDParent[0]);
                     if (owner != null && newparent != null && !newparent.Equals(owner))
                     {
-                        foreach (Post post in owner.Posts)
+
+
+                        for (int i = owner.Posts.Count - 1; i >= 0; i--)
                         {
-                            post.Theme = newparent;
-                            DBContext.Entry(post).State = EntityState.Modified;
+                            owner.Posts.ElementAt(i).Theme = newparent; 
+                            
+                            //DBContext.Entry(post).State = EntityState.Modified;
                         }
 
 

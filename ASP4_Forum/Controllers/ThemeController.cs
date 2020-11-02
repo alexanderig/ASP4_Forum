@@ -49,22 +49,30 @@ namespace ASP4_Forum.Controllers
         //    return View();
         //}
 
-        public async Task<ActionResult> Index(int id)
+        public async Task<ActionResult> ThemeIndex(int id, int? page)
         {
+            ApplicationUser user = null;
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                user = await Usermanager.FindByNameAsync(HttpContext.User.Identity.Name);
+            }
+            ViewBag.User = user;
+            ViewBag.page = page ?? 1;
             Theme theme = await DBContext.Themes.FindAsync(id);
             return View(theme);
         }
 
         [HttpPost]
-        public async Task<JsonResult> PostSave(PostViewModel model)
+        [Authorize]
+        public async Task<ActionResult> PostSave(PostViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                Theme theme = await DBContext.Themes.FindAsync(model.ThemeID);
+                Theme theme = await DBContext.Themes.FindAsync(model.ID);
                 ApplicationUser user = await Usermanager.FindByNameAsync(model.UserName);
                 if (theme == null || user == null)
                 {
-                    return Json("error");
+                    return View("Error");
                 }
                 Post post = new Post();
                 post.Owner = user;
@@ -77,9 +85,37 @@ namespace ASP4_Forum.Controllers
                 //DBContext.Entry(post).State = System.Data.Entity.EntityState.Added; 
                 await DBContext.SaveChangesAsync();
             }
-            
-            
-            return Json(model.PostText);
+
+
+            return RedirectToAction("ThemeIndex", new { id = model.ID, page = model.Page });
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult> EditPost(int postid, int? page)
+        {
+            ApplicationUser user = await Usermanager.FindByNameAsync(HttpContext.User.Identity.Name);
+            Post post = await DBContext.Posts.FindAsync(postid);
+            if (user == null || post == null || user.UserName != post.Owner.UserName)
+            {
+                return View("Error");
+            }
+
+            ViewBag.page = page ?? 1;
+            return View(post);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> EditPost(PostViewModel editedpost)
+        {
+            Post post = await DBContext.Posts.FindAsync(editedpost.ID);
+            post.EditedDate = DateTime.Now;
+            post.Text = editedpost.PostText;
+            await DBContext.SaveChangesAsync();
+            return RedirectToAction("ThemeIndex", new { id = post.Theme.ID, page = editedpost.Page});
+        }
+
+
     }
 }

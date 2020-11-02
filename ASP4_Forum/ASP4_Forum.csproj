@@ -849,8 +849,9 @@
     <Content Include="Views\Home\DelTheme.cshtml" />
     <Content Include="Views\Home\EditThemeName.cshtml" />
     <Content Include="Views\Home\EditThemeContent.cshtml" />
-    <Content Include="Views\Theme\Index.cshtml" />
+    <Content Include="Views\Theme\ThemeIndex.cshtml" />
     <Content Include="Views\Theme\_ScriptThemePartial.cshtml" />
+    <Content Include="Views\Theme\EditPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,27 +1,68 @@
 ﻿
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <script type="text/javascript">
-    $('.composer').summernote({
+
+    let param = {
         placeholder: 'Write text message here and post',
-        height: 350,        
+        height: 300,
+        disableDragAndDrop: true,
+        focus: true,
         toolbar: [
             ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear', 'fontsize']],
+            ['font', ['fontname', 'bold', 'underline', 'clear', 'fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['table', ['table']],
             ['insert', ['link', 'hr', 'picture']],
-           
+
         ]
-    });
-    $('.composer').summernote('justifyLeft');
-   
-    //$('.composer').summernote('insertImage', url, function ($image) {
-    //    $image.css('width', $image.width() / 3);
-    //    $image.attr('data-filename', 'retriever');
-    //});
+    }
+
     $(document).ready(function () {
+        $('#composer').summernote(param);
+        $('#composer').summernote('justifyLeft');
+
+    });
+
+   
+
+    //function OnEdit(e) {
+    //    let edit = e.target.closest('.closest-tr');
+    //    if (e.target.innerText === 'Edit') {
+            
+    //        $(edit).find('.user').summernote(param);
+    //        e.target.innerText = 'Save';
+    //    } else {
+    //        let text = $(edit).find('.user').summernote('code');
+    //        $(edit).find('.user').summernote('destroy');
+    //        e.target.innerText = 'Edit';
+    //        console.log(text);
+
+    //    }
+       
+
+    //}
+
+
+
+
+    function NewPost(e) {
+        
+        let newpost = document.getElementById('newpost');
+        if (newpost.style.display === 'block') {
+            newpost.style.display = 'none';
+            e.target.innerText = 'Make New Post'
+        } else {
+            newpost.style.display = 'block';
+            e.target.innerText = 'Hide New Post';
+        }
+    
+        
+    };
+
+   
+    @*$(document).ready(function () {
         //alert("ready");
         $('#save').click(function (e) {
             e.preventDefault();
@@ -67,16 +108,14 @@
                         alert('Uncaught Error. ' + jqXHR.responseText);
                     }
                 }
-            })
-            //alert('works');
-            //$('#result').empty();
-            //$('#result').html(composertext);
+            })        
 
-        });
-        $('#editcode').click((e) => {
-            //e.preventDefault();
-            $('.composer').summernote('pasteHTML', $('#postcontent').html());             
-        })
-    });
+        });*@
+
+    //    $('#editcode').click((e) => {
+    //        //e.preventDefault();
+    //        $('.composer').summernote('pasteHTML', $('#postcontent').html());             
+    //    })
+    //});
     //alert($('Getbutton').val());
 </script>
