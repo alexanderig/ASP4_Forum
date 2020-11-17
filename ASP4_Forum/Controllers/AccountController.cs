@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using ASP4_Forum.Models;
 using System.Collections.Generic;
 using ASP4_Forum.Helpers;
+using System.Web.Security;
 
 namespace ASP4_Forum.Controllers
 {
@@ -93,6 +94,21 @@ namespace ASP4_Forum.Controllers
                 jsonresult.Add(new City { ID = js.ID, CityName = js.CityName });
             return Json(jsonresult, JsonRequestBehavior.AllowGet);
 
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult> UserPage(string id)
+        {
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
+            if(user == null)
+            {
+                return View("Error");
+            }
+            
+            var RolesForUser = await UserManager.GetRolesAsync(user.Id);
+            ViewBag.RolesForUser = RolesForUser;
+            return View(user);
         }
 
         //

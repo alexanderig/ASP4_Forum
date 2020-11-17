@@ -3,20 +3,26 @@
     ViewBag.Title = "About";
 }
 <h2>@ViewBag.Title</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
-<div class="composer">
-    <h3>Default Editor</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem, nobis laboriosam repellat ipsum deserunt voluptate eos praesentium atque eligendi libero. Nam, id, eligendi natus facilis ullam pariatur numquam amet illum repudiandae ex porro labore in perferendis vero nobis iure ratione? Repudiandae, vel, quo, dolores velit vero debitis sed non odio culpa quasi excepturi tempore saepe atque quod repellendus aliquam eum neque dolorem beatae veniam quis id deserunt dignissimos voluptatum incidunt necessitatibus inventore reprehenderit consequatur esse perferendis ipsum earum pariatur et eaque sequi a harum sit similique itaque dicta expedita unde. Animi, quo, facilis laudantium quas commodi aut harum reprehenderit explicabo.</p>
+<h3>Description About Forum</h3>
+<div class="jumbotron">
+    <h3>Description</h3>
+    <h6>This site is demonstration of ASP.Net technology. Forum have three key points in his structure. First of all and main this is Sections.
+    Section represents main branch in forum structure which means toppest of header. It may content Partitions. However main page may content many main branches
+    i.e. Sections. Section have ability to collaps to save space if needed. Sections are responsibility of Administrators and privileged Moderators groups of users.</h6>
+    <h6>The second logical structure is Partition. Partitions are children of section, and represent next derived branch level in overall structure.
+    Partitions may content Themes. As  a Section Partition may be created only by privileged group of users such as Administrators and Moderatros.
+    
+    </h6>
+    <h6>
+        The last main logical structure and ending branhc is Theme. Theme may contains posts of users. New Theme may create any authorized user
+        such as posts too. However users from Moderators group may revise and edit it or block from view or even delete such post if rules was omitted.
+    </h6>
+    <h6>This site utilizes ASP.Net technology, SignalR technology, Entity Framework, Identity Server and WebApi Restfull service.</h6>
+    <h6>This work is not pursuit accuracy and best practices implementations as you can see in professional and commercial world. This is just for demonstration of combining different technologies in one place.</h6>
+    <h6>Site was created by Alexa Man</h6>
 </div>
-<input type="button" id="save" name="Getbutton" value="Save">
+
 <br/>
 <br/>
-<div class="jumbotron" id="result">
 
-</div>
-
-@section Scripts {
-    @{Html.RenderPartial("_ScriptPartial");}
-}

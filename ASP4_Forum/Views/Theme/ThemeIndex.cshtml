@@ -53,59 +53,93 @@
         @{
             for (int i = start; i < end; i++)
             {
-                <table>
-                    <tbody>
-                        <tr>
-                            <td class="row2">
-                                <div class="txtbold text-center">@Model.Posts.ElementAt(i).Owner.UserName</div>
-                            </td>
-                            <td class="row2 rwidth">
-                                @Model.Posts.ElementAt(i).Date
-                                <div style="float: right; padding-right: 10px"><strong>Message @Model.Posts.ElementAt(i).ID</strong></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="post2">
-                                <div>
-                                    <div class="mx-auto text-center"><img class="img-fluid img-thumbnail" style="width: 100px" src="/@Model.Posts.ElementAt(i).Owner.AvatarURL" alt="avatar" /></div>
-                                    <p>city: <span>@Model.Posts.ElementAt(i).Owner.City.CityName</span></p>
-                                    <p>country : <span>@Model.Posts.ElementAt(i).Owner.Country.Name</span></p>
-                                    <p>e-mail: <span>@Model.Posts.ElementAt(i).Owner.Email</span></p>
-
-                                </div>
-                            </td>
-                            <td class="post2 rwidth">
-                                <div>
-                                    @Html.Raw(Model.Posts.ElementAt(i).Text)
-
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="row2 botline"></td>
-                            <td class="row2 botline rwidth">
-                                @{
-                                    if (Model.Posts.ElementAt(i).Date != Model.Posts.ElementAt(i).EditedDate)
-                                    {
-                                        <i class="float-left">Edited: @Model.Posts.ElementAt(i).EditedDate</i>
-                                    }
-                                    if (Model.Posts.ElementAt(i).Owner.UserName == HttpContext.Current.User.Identity.Name)
-                                    {
-                                        <form action="/Theme/EditPost" method="get">
-                                            <input type="hidden" name="postid" value="@Model.Posts.ElementAt(i).ID" />
-                                            <input type="hidden" name="page" value="@page" />
-                                            <input class="g-btn float-right" type="submit" value="Edit" />
-                                        </form>
+                <table class="parenttable" style="@if (Model.Posts.ElementAt(i).IsBanned) { @("border: thick solid #ff0000;") }">
 
 
-                                    }
-                                }
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="footer"></td>
-                        </tr>
-                    </tbody>
+                <tbody>
+                <tr>
+                <td class="row2">
+                <div class="txtbold text-center"><a href="/Account/UserPage/?id=@Model.Posts.ElementAt(i).Owner.Id"> @Model.Posts.ElementAt(i).Owner.UserName</a></div>
+                </td>
+                <td class="row2 rwidth">
+                @Model.Posts.ElementAt(i).Date
+                <div style="float: right; padding-right: 10px"><strong>Message @Model.Posts.ElementAt(i).ID</strong></div>
+                </td>
+                </tr>
+                <tr>
+                <td class="post2">
+                <div>
+                <div class="mx-auto text-center"><img class="img-fluid img-thumbnail" style="width: 100px" src="/@Model.Posts.ElementAt(i).Owner.AvatarURL" alt="avatar" /></div>
+                <p>city: <span>@Model.Posts.ElementAt(i).Owner.City.CityName</span></p>
+                <p>country : <span>@Model.Posts.ElementAt(i).Owner.Country.Name</span></p>
+                <p>e-mail: <span>@Model.Posts.ElementAt(i).Owner.Email</span></p>
+
+                </div>
+                </td>
+                <td class="post2 rwidth">
+                <div>
+                @{
+                    if (Model.Posts.ElementAt(i).IsBanned && !HttpContext.Current.User.IsInRole("Moderators"))
+                    {
+                        <h3 class="text-danger">Message was blocked by Moderators</h3>
+                    }
+                    else
+                    {
+                        @Html.Raw(Model.Posts.ElementAt(i).Text)
+                    }
+                }
+
+
+                </div>
+                </td>
+                </tr>
+                <tr>
+                    <td class="row2 botline text-center">
+                        @if (HttpContext.Current.User.IsInRole("Moderators") || HttpContext.Current.User.IsInRole("Administrators"))
+                        {
+                            <input class="g-btn red" type="submit" value="BanUser" name="@Model.Posts.ElementAt(i).Owner.Id" />
+                            <input class="g-btn green" type="submit" value="ResetBan" name="@Model.Posts.ElementAt(i).Owner.Id" />
+
+                        }
+
+                    </td>
+                <td class="row2 botline rwidth">
+                @{
+                    if (Model.Posts.ElementAt(i).Date != Model.Posts.ElementAt(i).EditedDate)
+                    {
+                        <i class="float-left">Edited: @Model.Posts.ElementAt(i).EditedDate</i>
+                    }
+                    if (Model.Posts.ElementAt(i).Owner.UserName == HttpContext.Current.User.Identity.Name && Model.Posts.ElementAt(i).IsBanned == false
+                        || HttpContext.Current.User.IsInRole("Moderators") || HttpContext.Current.User.IsInRole("Administrators"))
+                    {
+                        <form action="/Theme/EditPost" method="get">
+                        <input type="hidden" name="postid" value="@Model.Posts.ElementAt(i).ID" />
+                        <input type="hidden" name="page" value="@page" />
+                        <input class="g-btn blue float-right" type="submit" value="Edit" />
+                        </form>
+                        
+                        if (HttpContext.Current.User.IsInRole("Moderators") || HttpContext.Current.User.IsInRole("Administrators"))
+
+                        {   <input class="g-btn red float-right" type="submit" value="Delete" name="@Model.Posts.ElementAt(i).ID" />
+                            <div class="d-flex float-right mr-4">
+                            <span class="status text-danger">@if (Model.Posts.ElementAt(i).IsBanned)
+                            {@("Blocked")}</span>
+                            <input class="mr-2 ml-2" type="checkbox" name="isblocked" value="@Model.Posts.ElementAt(i).ID"
+                            @if (Model.Posts.ElementAt(i).IsBanned)
+                            {@("checked")} />
+                            Block this post
+                            </div>
+                        }
+
+
+                    }
+                }
+                </td>
+                </tr>
+                <tr>
+                <td colspan="2" class="footer"></td>
+                </tr>
+                </tbody>
                 </table>
             }
         }
@@ -159,7 +193,11 @@
                     <tr>
                         <td class="row2"></td>
                         <td class="row2 rwidth text-center">
+                            @if(ViewBag.Banned == false)
+                            {
                             <button class="g-btn" onclick="NewPost(event)">Make New Post</button>
+                            }
+                            
                         </td>
                     </tr>
                     <tr>

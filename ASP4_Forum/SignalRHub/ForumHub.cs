@@ -13,8 +13,6 @@ using System.Net.Http;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Mvc;
 using ASP4_Forum.Controllers;
-//using System.Web.UI;
-//using Microsoft.AspNet.Identity;
 
 namespace ASP4_Forum.SignalRHub
 {
@@ -31,11 +29,6 @@ namespace ASP4_Forum.SignalRHub
             
             if (!string.IsNullOrEmpty(avapath))
             {
-                //var controller = DependencyResolver.Current.GetService<ManageController>();
-                
-                //controller.ControllerContext = new ControllerContext(_httpContextAccessor.Request.RequestContext, controller);
-                
-                
                 var myusermanager = new ApplicationUserManager(new UserStore<ApplicationUser>(new ApplicationDbContext()));
                 ApplicationUser user = myusermanager.FindById(userId);
                 user.AvatarURL = avapath;
@@ -50,13 +43,11 @@ namespace ASP4_Forum.SignalRHub
 
 
 
-        // Отправка сообщений
         public void Send(string name, string message)
         {
             Clients.All.addMessage(name, message);
         }
 
-        // Подключение нового пользователя
         public void Connect(string userName)
         {
             var id = Context.ConnectionId;
@@ -65,11 +56,6 @@ namespace ASP4_Forum.SignalRHub
             if (!Users.Any(x => x.ConnectionId == id))
             {
                 Users.Add(new ConnectedUser { ConnectionId = id, Name = userName });
-
-                // Посылаем сообщение текущему пользователю
-                //Clients.Caller.onConnected(id, userName, Users);
-
-                // Посылаем сообщение всем пользователям, кроме текущего
                 Clients.AllExcept(id).onNewUserConnected(id, userName);
             }
         }

@@ -1,0 +1,41 @@
+﻿@model ASP4_Forum.Models.ApplicationUser
+    @using ASP4_Forum.Models
+@{
+    ViewBag.Title = "UserPage";
+}
+
+<h2>UserPage</h2>
+<div class="d-flex justify-content-center">
+    <div class="card bg-light border-dark" style="width: 22rem;">
+        <img src="/@Model.AvatarURL" class="card-img-top img-thumbnail col-10 mx-auto" alt="avatar">
+        <div class="card-body">
+            <h5 class="card-title">@Model.UserName</h5>
+            
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Email: </b> @Model.Email</li>
+            <li class="list-group-item"><b>City: </b>@Model.City.CityName</li>
+            <li class="list-group-item"><b>Country: </b>@Model.Country.Name</li>
+            <li class="list-group-item"><b>Last ban: </b>
+            @if(Model.BannedDate != null)
+            {
+                @Model.BannedDate.ToString();
+            } else {
+                @(" never")
+            }
+            </li>
+        </ul>
+        <div class="card-body">
+            @foreach (string role in ViewBag.RolesForUser)
+            {
+            <span><b>Group: </b> @role</span><br />
+            }
+
+        </div>
+        <div class="card-footer text-muted text-center">
+            Posts: @Model.Posts.Count;&nbsp;&nbsp;
+            Themes: @Model.Themes.Count
+        </div>
+    </div>
+</div>
+

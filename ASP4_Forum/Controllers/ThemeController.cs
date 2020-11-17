@@ -43,11 +43,7 @@ namespace ASP4_Forum.Controllers
 
         public ThemeController() { }
 
-        // GET: Theme
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
+      
 
         public async Task<ActionResult> ThemeIndex(int id, int? page)
         {
@@ -57,8 +53,13 @@ namespace ASP4_Forum.Controllers
                 user = await Usermanager.FindByNameAsync(HttpContext.User.Identity.Name);
             }
             ViewBag.User = user;
+            ViewBag.Banned = UserBanState(user);
             ViewBag.page = page ?? 1;
             Theme theme = await DBContext.Themes.FindAsync(id);
+            if(theme == null)
+            {
+                return View("Error");
+            }
             return View(theme);
         }
 
@@ -70,7 +71,7 @@ namespace ASP4_Forum.Controllers
             {
                 Theme theme = await DBContext.Themes.FindAsync(model.ID);
                 ApplicationUser user = await Usermanager.FindByNameAsync(model.UserName);
-                if (theme == null || user == null)
+                if (theme == null || user == null || UserBanState(user))
                 {
                     return View("Error");
                 }
@@ -90,13 +91,27 @@ namespace ASP4_Forum.Controllers
             return RedirectToAction("ThemeIndex", new { id = model.ID, page = model.Page });
         }
 
+        private bool UserBanState(ApplicationUser user)
+        {
+           
+            if(user.BannedDate == null)
+            {
+                return false;
+            } else 
+            {
+                return user.BannedDate > DateTime.Now;  
+            }
+        }
+
+
         [HttpGet]
         [Authorize]
         public async Task<ActionResult> EditPost(int postid, int? page)
         {
             ApplicationUser user = await Usermanager.FindByNameAsync(HttpContext.User.Identity.Name);
             Post post = await DBContext.Posts.FindAsync(postid);
-            if (user == null || post == null || user.UserName != post.Owner.UserName)
+            if (user == null || post == null || 
+                (user.UserName != post.Owner.UserName && !HttpContext.User.IsInRole("Moderators")) || UserBanState(user))
             {
                 return View("Error");
             }
@@ -116,6 +131,7 @@ namespace ASP4_Forum.Controllers
             return RedirectToAction("ThemeIndex", new { id = post.Theme.ID, page = editedpost.Page});
         }
 
+       
 
     }
 }

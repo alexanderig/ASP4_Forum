@@ -9,6 +9,7 @@ using System;
 using System.Web.UI.WebControls.WebParts;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASP4_Forum.Models
 {
@@ -30,9 +31,13 @@ namespace ASP4_Forum.Models
         public string AvatarURL { get; set; }
         public virtual City City {get;set;}
         public virtual Country Country { get; set; }
+        //public virtual Theme Theme { get; set; }
+        [InverseProperty("Creator")]
         public virtual ICollection<Theme> Themes { get; set; }
+        [InverseProperty("Curator")]
+        public virtual ICollection<Theme> ThemesCurator { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
-        public DateTime BannedDate { get; set; }
+        public DateTime? BannedDate { get; set; }
 
     }
 
@@ -113,7 +118,7 @@ namespace ASP4_Forum.Models
             ApplicationUser user = userManager.FindByName(userName);
             if (user == null)
             {
-                var result = userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city1, Country = ctr1, AvatarURL = avatarPath, BannedDate = DateTime.Now }, pass);
+                var result = userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city1, Country = ctr1, AvatarURL = avatarPath }, pass);
                 user = userManager.FindByName(userName);
             }
 
@@ -132,7 +137,7 @@ namespace ASP4_Forum.Models
             
             if (user == null)
             {
-                userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city2, Country = ctr1, AvatarURL = avatarPath, BannedDate = DateTime.Now }, pass);
+                userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city2, Country = ctr1, AvatarURL = avatarPath }, pass);
                 user = userManager.FindByName(userName);
             }
 
@@ -151,7 +156,7 @@ namespace ASP4_Forum.Models
             
             if (user == null)
             {
-                userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city26, Country = ctr11, AvatarURL = avatarPath, BannedDate = DateTime.Now }, pass);
+                userManager.Create(new ApplicationUser { UserName = userName, Email = email, City = city26, Country = ctr11, AvatarURL = avatarPath }, pass);
                 user = userManager.FindByName(userName);
             }
 

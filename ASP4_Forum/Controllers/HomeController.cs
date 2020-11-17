@@ -102,11 +102,22 @@ namespace ASP4_Forum.Controllers
             return View();
         }
 
-        [System.Web.Http.Authorize(Roles = "Users")]
-        public ActionResult OtherAction()
+        //[System.Web.Http.Authorize(Roles = "Users")]
+        //public ActionResult OtherAction()
+        //{
+        //    return View("Index", GetData("OtherAction"));
+        //}
+
+        public async Task<ActionResult> PartView(int partId)
         {
-            return View("Index", GetData("OtherAction"));
+            Partition partition = await DBContext.Partitions.FindAsync(partId);
+            if(partition == null)
+            {
+                return View("Error");
+            }
+            return View(partition);
         }
+
 
         public async Task<ActionResult> Partitions()
         {
@@ -466,15 +477,24 @@ namespace ASP4_Forum.Controllers
         }
 
         [HttpGet]
-        public ActionResult CreateTheme()
+        public ActionResult CreateTheme(int? parentid)
         {
+            
             // return PartialView(new Theme { Name = "", Date = DateTime.Now, Partitions = null });
-            ViewBag.ListPartitions = new SelectList(DBContext.Partitions, "ID", "Name");
-            return PartialView(new ThemeViewModel { Name = "", Partition = null });
+            ViewBag.ListPartitions = parentid == null ? new SelectList(DBContext.Partitions, "ID", "Name") 
+                : new SelectList(DBContext.Partitions.Where(i => i.ID == parentid), "ID", "Name");
+            if(parentid != null)
+            {
+                return PartialView("CreateThemefromIndex", new ThemeViewModel { Name = "", Partition = null });
+            } else
+            {
+                return PartialView(new ThemeViewModel { Name = "", Partition = null });
+            }
+            
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateTheme(ThemeViewModel thememodel)
+        public async Task<ActionResult> CreateTheme(ThemeViewModel thememodel, bool isindex)
         {
             if (ModelState.IsValid)
             {
@@ -489,8 +509,14 @@ namespace ASP4_Forum.Controllers
                     DBContext.Themes.Add(theme);
                     await DBContext.SaveChangesAsync();
                 }
-
-                return RedirectToAction("Themes");
+                if (isindex)
+                {
+                    return RedirectToAction("Index");
+                } else
+                {
+                    return RedirectToAction("Themes");
+                }
+                
             }
 
             return PartialView(thememodel);

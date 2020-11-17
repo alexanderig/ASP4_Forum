@@ -19,36 +19,91 @@
         ]
     }
 
+
+    var showError = function(jqXHR, exception) {
+        if (jqXHR.status === 0) {
+            alert('Not connect. Verify Network.');
+        } else if (jqXHR.status == 404) {
+            alert('Requested page not found (404).');
+        } else if (jqXHR.status == 500) {
+            alert('Internal Server Error (500).');
+        } else if (exception === 'parsererror') {
+            alert('Requested JSON parse failed.');
+        } else if (exception === 'timeout') {
+            alert('Time out error.');
+        } else if (exception === 'abort') {
+            alert('Ajax request aborted.');
+        } else {
+            alert('Uncaught Error. ' + jqXHR.responseText);
+        }
+    }
+
+
     $(document).ready(function () {
         $('#composer').summernote(param);
         $('#composer').summernote('justifyLeft');
 
+        var chboxes = document.querySelectorAll('input[name=isblocked]').forEach(item => item.addEventListener('change', (event) => {
+
+            $.ajax({
+                type: "PATCH",
+                url: '/api/apiPost/' + item.value,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    let span = item.parentNode.children[0];
+                    span.innerText = data;
+                    let table = item.closest('.parenttable');
+                    if (data === 'Unblocked' && span.classList.contains('text-danger')) {
+                        span.classList.remove('text-danger');
+                        span.classList.add('text-success');
+                        table.style.border = "thick solid #00cc00";
+                    } else {
+                        span.classList.remove('text-success');
+                        span.classList.add('text-danger');
+                        table.style.border = "thick solid #ff0000";
+                    }
+                },
+
+                error: (jqXHR, exception) => showError(jqXHR, exception)
+            })
+
+        }
+
+        ));
+
+        var delbtn = document.querySelectorAll('input[value=Delete]').forEach(item => item.addEventListener('click', (event) => {
+            if (confirm("Delete this post?")) {
+              
+                $.ajax({
+                type: "DELETE",
+                url: '/api/apiPost/' + item.name,
+                
+                contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        item.closest('.parenttable').remove();
+                },
+
+                    error: (jqXHR, exception) => showError(jqXHR, exception)
+            })
+            }
+        }));
+
+        var banuser = document.querySelectorAll('input[value=BanUser]').forEach(item => item.addEventListener('click', (event) => {
+            alert('clicked');
+        }));
+
+        var resetban = document.querySelectorAll('input[value=ResetBan]').forEach(item => item.addEventListener('click', (event) => {
+            alert('clicked');
+        }));
+
+
     });
 
+
+
    
-
-    //function OnEdit(e) {
-    //    let edit = e.target.closest('.closest-tr');
-    //    if (e.target.innerText === 'Edit') {
-            
-    //        $(edit).find('.user').summernote(param);
-    //        e.target.innerText = 'Save';
-    //    } else {
-    //        let text = $(edit).find('.user').summernote('code');
-    //        $(edit).find('.user').summernote('destroy');
-    //        e.target.innerText = 'Edit';
-    //        console.log(text);
-
-    //    }
-       
-
-    //}
-
-
-
-
     function NewPost(e) {
-        
+
         let newpost = document.getElementById('newpost');
         if (newpost.style.display === 'block') {
             newpost.style.display = 'none';
@@ -57,65 +112,9 @@
             newpost.style.display = 'block';
             e.target.innerText = 'Hide New Post';
         }
-    
-        
+
+
     };
 
-   
-    @*$(document).ready(function () {
-        //alert("ready");
-        $('#save').click(function (e) {
-            e.preventDefault();
-            var composertext = $('.composer').summernote('code');
-            var UName = "@HttpContext.Current.User.Identity.Name";
-            var Themeid = $('#themeid').val();
-            //alert(ThemeID);
-            var form = new FormData();
-            form.append("ThemeID", Themeid);
-            form.append("PostText", composertext);
-            form.append("UserName", UName);
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("PostSave", "Theme")',
-                //contentType: false,
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-               // processData: false,
-                //data: form,
-                data: JSON.stringify({
-                    ThemeID: Themeid,
-                    PostText: composertext,
-                    UserName: UName
-                }),
-                success: function (data) {
-                    $('#postcontent').html(data);
-                },
 
-                error: function (jqXHR, exception) {
-                    if (jqXHR.status === 0) {
-                        alert('Not connect. Verify Network.');
-                    } else if (jqXHR.status == 404) {
-                        alert('Requested page not found (404).');
-                    } else if (jqXHR.status == 500) {
-                        alert('Internal Server Error (500).');
-                    } else if (exception === 'parsererror') {
-                        alert('Requested JSON parse failed.');
-                    } else if (exception === 'timeout') {
-                        alert('Time out error.');
-                    } else if (exception === 'abort') {
-                        alert('Ajax request aborted.');
-                    } else {
-                        alert('Uncaught Error. ' + jqXHR.responseText);
-                    }
-                }
-            })        
-
-        });*@
-
-    //    $('#editcode').click((e) => {
-    //        //e.preventDefault();
-    //        $('.composer').summernote('pasteHTML', $('#postcontent').html());             
-    //    })
-    //});
-    //alert($('Getbutton').val());
 </script>

@@ -21,6 +21,7 @@ namespace ASP4_Forum.Models
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public virtual ApplicationUser Creator { get; set; }
+        public virtual ApplicationUser Curator { get; set; }
         public virtual Partition Partition { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
     }
