@@ -28,7 +28,10 @@
             <h5>Last post by:<span class="text-primary"> @lastcomment</span></h5>
         </div>
         <hr />
-        @{ int tiles = 10;
+        @{ 
+
+
+            int tiles = 10;
             int items = Model.Posts.Count;
             int page = ViewBag.page ?? 1;
             int pcounter = page - 1;
@@ -44,6 +47,25 @@
             }
             end = end > items ? items : end;
             start = start > items ? items : start;
+            bool isPrivilegedUser = false;
+            if(HttpContext.Current.User.IsInRole("Moderators") || HttpContext.Current.User.IsInRole("Administrators"))
+            {
+                isPrivilegedUser = true;
+            }
+
+            bool UserBanState(ApplicationUser user)
+            {
+
+                if (user.BannedDate == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return user.BannedDate > DateTime.Now;
+                }
+            }
+
         }
 
 
@@ -53,7 +75,7 @@
         @{
             for (int i = start; i < end; i++)
             {
-                <table class="parenttable" style="@if (Model.Posts.ElementAt(i).IsBanned) { @("border: thick solid #ff0000;") }">
+                <table class="parenttable">
 
 
                 <tbody>
@@ -67,7 +89,7 @@
                 </td>
                 </tr>
                 <tr>
-                <td class="post2">
+                <td class="post2 user"  style="@if (UserBanState(Model.Posts.ElementAt(i).Owner) && isPrivilegedUser) { @("border: thick solid #ff0000;") }">
                 <div>
                 <div class="mx-auto text-center"><img class="img-fluid img-thumbnail" style="width: 100px" src="/@Model.Posts.ElementAt(i).Owner.AvatarURL" alt="avatar" /></div>
                 <p>city: <span>@Model.Posts.ElementAt(i).Owner.City.CityName</span></p>
@@ -76,10 +98,10 @@
 
                 </div>
                 </td>
-                <td class="post2 rwidth">
+                <td class="post2 rwidth"  style="@if (Model.Posts.ElementAt(i).IsBanned && isPrivilegedUser) { @("border: thick solid #ff0000;") }">
                 <div>
                 @{
-                    if (Model.Posts.ElementAt(i).IsBanned && !HttpContext.Current.User.IsInRole("Moderators"))
+                    if (Model.Posts.ElementAt(i).IsBanned && !isPrivilegedUser)
                     {
                         <h3 class="text-danger">Message was blocked by Moderators</h3>
                     }
@@ -95,7 +117,7 @@
                 </tr>
                 <tr>
                     <td class="row2 botline text-center">
-                        @if (HttpContext.Current.User.IsInRole("Moderators") || HttpContext.Current.User.IsInRole("Administrators"))
+                        @if (isPrivilegedUser)
                         {
                             <input class="g-btn red" type="submit" value="BanUser" name="@Model.Posts.ElementAt(i).Owner.Id" />
                             <input class="g-btn green" type="submit" value="ResetBan" name="@Model.Posts.ElementAt(i).Owner.Id" />
@@ -110,7 +132,7 @@
                         <i class="float-left">Edited: @Model.Posts.ElementAt(i).EditedDate</i>
                     }
                     if (Model.Posts.ElementAt(i).Owner.UserName == HttpContext.Current.User.Identity.Name && Model.Posts.ElementAt(i).IsBanned == false
-                        || HttpContext.Current.User.IsInRole("Moderators") || HttpContext.Current.User.IsInRole("Administrators"))
+                        || isPrivilegedUser)
                     {
                         <form action="/Theme/EditPost" method="get">
                         <input type="hidden" name="postid" value="@Model.Posts.ElementAt(i).ID" />
@@ -118,7 +140,7 @@
                         <input class="g-btn blue float-right" type="submit" value="Edit" />
                         </form>
                         
-                        if (HttpContext.Current.User.IsInRole("Moderators") || HttpContext.Current.User.IsInRole("Administrators"))
+                        if (isPrivilegedUser)
 
                         {   <input class="g-btn red float-right" type="submit" value="Delete" name="@Model.Posts.ElementAt(i).ID" />
                             <div class="d-flex float-right mr-4">
@@ -193,7 +215,7 @@
                     <tr>
                         <td class="row2"></td>
                         <td class="row2 rwidth text-center">
-                            @if(ViewBag.Banned == false)
+                            @if(UserBanState(ViewBag.User) == false)
                             {
                             <button class="g-btn" onclick="NewPost(event)">Make New Post</button>
                             }

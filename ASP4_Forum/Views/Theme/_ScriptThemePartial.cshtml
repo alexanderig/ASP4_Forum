@@ -52,7 +52,7 @@
                 success: function (data) {
                     let span = item.parentNode.children[0];
                     span.innerText = data;
-                    let table = item.closest('.parenttable');
+                    let table = item.closest('.parenttable').querySelector('.post2.rwidth');
                     if (data === 'Unblocked' && span.classList.contains('text-danger')) {
                         span.classList.remove('text-danger');
                         span.classList.add('text-success');
@@ -89,11 +89,33 @@
         }));
 
         var banuser = document.querySelectorAll('input[value=BanUser]').forEach(item => item.addEventListener('click', (event) => {
-            alert('clicked');
+            $.ajax({
+                type: "POST",
+                url: '/api/apiPost/' + item.name,
+
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    let table = item.closest('.parenttable').querySelector('.post2.user');
+                    table.style.border = "thick solid #ff0000";//red                    
+                },
+
+                error: (jqXHR, exception) => showError(jqXHR, exception)
+            })
         }));
 
         var resetban = document.querySelectorAll('input[value=ResetBan]').forEach(item => item.addEventListener('click', (event) => {
-            alert('clicked');
+            $.ajax({
+                type: "PUT",
+                url: '/api/apiPost/' + item.name,
+
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    let table = item.closest('.parenttable').querySelector('.post2.user');
+                    table.style.border = "thick solid #00cc00";//green                   
+                },
+
+                error: (jqXHR, exception) => showError(jqXHR, exception)
+            })
         }));
 
 

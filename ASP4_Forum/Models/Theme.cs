@@ -15,7 +15,7 @@ namespace ASP4_Forum.Models
         }
         public int ID { get; set; }
         [Required(ErrorMessage = "Theme cannot be empty")]
-        [RegularExpression(@"[\w\s]+", ErrorMessage = "Incorrect Theme Name")]
+        //[RegularExpression(@"[\w\s]+", ErrorMessage = "Incorrect Theme Name")]
         [Remote(action: "CheckTheme", controller: "Home", ErrorMessage = "Theme Name already in use")]
         [Display(Name = "Theme Name")]
         public string Name { get; set; }

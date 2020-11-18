@@ -19,6 +19,7 @@ namespace ASP4_Forum
     {
        
         private ApplicationDbContext _dbContext;
+        private ApplicationUserManager _userManager;
        
         public ApplicationDbContext DBContext
         {
@@ -31,6 +32,20 @@ namespace ASP4_Forum
                 _dbContext = value;
             }
         }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+
 
         [HttpPatch]       
         public async Task<JsonResult<string>> BlockingPost(int id)
@@ -67,5 +82,33 @@ namespace ASP4_Forum
             await DBContext.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> BanUser(string id)
+        {
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            DateTime bandate = user.BannedDate ?? DateTime.Now;
+            user.BannedDate = bandate.AddDays(1);
+            await UserManager.UpdateAsync(user);
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IHttpActionResult> ResetBan(string id)
+        {
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.BannedDate = DateTime.Now;
+            await UserManager.UpdateAsync(user);
+            return Ok();
+        }
+
     }
 }

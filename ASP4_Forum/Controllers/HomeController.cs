@@ -7,14 +7,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-//using System.Web.Http;
-//using System.Web.Http;
-//using System.Web.Http;
-//using System.Web.Http;
-//using System.Web.Http;
 using System.Web.Mvc;
 using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
-//using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 
 namespace ASP4_Forum.Controllers
 {
@@ -102,11 +96,6 @@ namespace ASP4_Forum.Controllers
             return View();
         }
 
-        //[System.Web.Http.Authorize(Roles = "Users")]
-        //public ActionResult OtherAction()
-        //{
-        //    return View("Index", GetData("OtherAction"));
-        //}
 
         public async Task<ActionResult> PartView(int partId)
         {
@@ -363,11 +352,8 @@ namespace ASP4_Forum.Controllers
             if (section.Partitions.Count() > 0)
             {
                 ModelState.AddModelError("", "Section contains Partitions");
-                //   SectionModel sectionModel = new SectionModel { ID = section.ID, Date = section.Date, Name = section.Name };
-                // return PartialView(sectionModel);
             }
 
-            //Section sectionModel = new SectionModel { ID = section.ID, Date = section.Date, Name = section.Name };
             return PartialView(section);
         }
 
@@ -388,13 +374,11 @@ namespace ASP4_Forum.Controllers
             if (section.Partitions.Count() > 0)
             {
                 ModelState.AddModelError("", "Section contains Partitions");
-                //SectionModel sectionModel = new SectionModel { ID = section.ID, Date = section.Date, Name = section.Name };
                 return PartialView(section);
             }
             DBContext.Sections.Remove(section);
             await DBContext.SaveChangesAsync();
             return Json("ok");
-            //return RedirectToAction("Sections");
         }
 
         [HttpGet]
@@ -403,7 +387,6 @@ namespace ASP4_Forum.Controllers
             if (id == null)
                 return HttpNotFound();
             Section section = await DBContext.Sections.FindAsync(id);
-            // string[] memberIDs = section.Partitions.Where(p => p.ID;
             try
             {
                 IEnumerable<Partition> members = section.Partitions;// Where(x => memberIDs.Any(y => y == x.Id));
@@ -599,21 +582,13 @@ namespace ASP4_Forum.Controllers
             if (id == null)
                 return HttpNotFound();
             Theme theme = await DBContext.Themes.FindAsync(id);
-            // string[] memberIDs = section.Partitions.Where(p => p.ID;
             try
             {
-                //IEnumerable<Theme> members = ; //theme.Posts .Partitions;// Where(x => memberIDs.Any(y => y == x.Id));
-                // IEnumerable<Theme> members = DBContext.Themes.Where(x => x.ID == theme.ID);
-
-                // IEnumerable<Theme> nonMembers = DBContext.Themes.ToList().Except(members).ToList();// UserManager.Users.Except(members);
-
                 ViewBag.Themes = await DBContext.Themes.ToListAsync();
                 return PartialView(new ThemeEditModel
                 {
                     Theme = theme,
                     Posts = theme.Posts.Count
-                    // Members = members,
-                    // NonMembers = nonMembers
                 });
             }
             catch (Exception ex)
@@ -674,14 +649,7 @@ namespace ASP4_Forum.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        //public JsonResult CheckSectionChildren(int id)
-        //{
-        //    Section section = DBContext.Sections.Find(id);
-        //    if (section != null && section.Partitions.Count() > 0)
-        //        return Json(false, JsonRequestBehavior.AllowGet);
-        //    else
-        //        return Json(true, JsonRequestBehavior.AllowGet);
-        //}
+    
 
         public JsonResult CheckPartition(string name)
         {

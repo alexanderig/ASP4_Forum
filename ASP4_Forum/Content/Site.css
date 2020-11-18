@@ -22,3 +22,34 @@ textarea {
 .dl-horizontal dt {
     white-space: normal;
 }
+.collapsing {
+    background-color: #80ced6;
+}
+
+
+table.mtable {
+    background-color: #deeaee;
+    border: 1px solid #618685;
+    width: 100%;
+    margin: 0px;
+    border-bottom: 10px solid #618685;
+    text-align: center;
+}
+
+thead.mtable-header {
+    background-color: #36486b;
+    text-align: center;
+    color: white;
+}
+
+.bg-bluedark {
+    background-color: #3B5998;
+}
+
+.bg-lightgrey {
+    background-color: #F7F7F7;
+}
+
+img.icoimage {
+    width: 25px;
+}

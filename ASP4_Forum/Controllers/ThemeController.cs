@@ -47,13 +47,12 @@ namespace ASP4_Forum.Controllers
 
         public async Task<ActionResult> ThemeIndex(int id, int? page)
         {
-            ApplicationUser user = null;
+            ApplicationUser user = new ApplicationUser();
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 user = await Usermanager.FindByNameAsync(HttpContext.User.Identity.Name);
             }
             ViewBag.User = user;
-            ViewBag.Banned = UserBanState(user);
             ViewBag.page = page ?? 1;
             Theme theme = await DBContext.Themes.FindAsync(id);
             if(theme == null)
@@ -83,7 +82,6 @@ namespace ASP4_Forum.Controllers
                 post.Date = DateTime.Now;
                 post.EditedDate = DateTime.Now;
                 DBContext.Posts.Add(post);
-                //DBContext.Entry(post).State = System.Data.Entity.EntityState.Added; 
                 await DBContext.SaveChangesAsync();
             }
 

@@ -17,7 +17,6 @@ namespace ASP4_Forum.Models
         public int ID { get; set; }
 
         [Required(ErrorMessage = "Section must be not empty")]
-        [RegularExpression(@"[\w\s]+", ErrorMessage = "Incorrect Section Name")]
         [Remote(action: "CheckSection", controller: "Home", ErrorMessage = "Section Name already in use")]
         [Display(Name = "Section Name")]
         public string Name { get; set; }
